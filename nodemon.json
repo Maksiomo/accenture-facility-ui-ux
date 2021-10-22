@@ -1,5 +1,5 @@
 {
     "watch": ["src"],
     "ext": "ts, js, json",
-    "exec": "concurrently \"ts-node ./src/backend/Server.ts --project ./tscongig.json\" \" cd B:/accenture-facility-ui-ux/src/frontend/front && npm start\"" 
+    "exec": "concurrently \"ts-node ./src/backend/Server.ts --project ./tscongig.json\" \" cd ./src/frontend/front && npm start\"" 
 }
