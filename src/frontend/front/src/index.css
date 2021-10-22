@@ -14,7 +14,7 @@ code {
 
 .wrapper {
   display: flex;
-  height: 38rem;
+  height: 92vh;
   width: 100%;
 }
 
@@ -35,14 +35,15 @@ code {
 
 .legent {
   display: block;
-  height: 60%;
+  height: auto;
+  max-height: 75%;
   width: 100%;
 }
 
 .vertical-menu-div {
   display: block;
-  background-color: #333;
-  height: 40%;
+  height: auto;
+  max-height: 25%;
   width: 100%;
 }
 
@@ -57,6 +58,7 @@ code {
   white-space: nowrap;
   background-color:#333;
   text-align: center;
+  align-items: center;
   margin: 0;
   padding: 0;
 }
@@ -80,6 +82,7 @@ code {
   overflow:auto;
   margin: 0;
   padding: 0;
+  background-color: #333;
 }
 
 .vertical-item {
@@ -93,6 +96,27 @@ code {
 
 .vertical-item:hover {
   background-color: #777;
+}
+
+.info-menu {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-height: 100%;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0;
+}
+
+.info-item {
+  color: black;
+  background-color: lightgreen;
+  padding: 14px;
+  text-decoration: none;
+}
+
+.info-item:hover {
+  background-color: lightcyan;
 }
 
 .lds-dual-ring {
@@ -120,4 +144,20 @@ code {
   100% {
     transform: rotate(360deg);
   }
+}
+
+.warning {
+  background-color: lightsalmon;
+}
+
+.warning:hover {
+  background-color: salmon;
+}
+
+.danger {
+  background-color: crimson;
+}
+
+.danger:hover {
+  background-color: darkred;
 }
