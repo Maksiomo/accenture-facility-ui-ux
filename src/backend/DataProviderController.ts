@@ -7,7 +7,7 @@ export class DataProviderController {
 
   constructor(private readonly dataProvider: DataProviderService) {
     this.router.get(
-      ":tableId/getTableData",
+      "/:tableId/getTableData",
       handler((req) => {
         const tableId = req.params.tableId;
         return this.dataProvider.getTableData(tableId);

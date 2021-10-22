@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import axios from "axios";
+import handler from "./handler";
 import { DataProviderService } from "./DataProviderService";
 import { DataProviderController } from "./DataProviderController";
 
@@ -12,6 +13,6 @@ const dataProvider = new DataProviderController(dataProviderService);
 
 app.use("/dataProvider", dataProvider.router);
 
-app.listen(4444, "0.0.0.0", async () => {
-  console.log("Data provider server started! Port: " + 4444);
+app.listen(5555, "0.0.0.0", () => {
+  console.log("Data provider server started! Port: " + 5555);
 });

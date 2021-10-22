@@ -7,7 +7,7 @@ export default function handler(
     try {
       const data = await handler(req);
       const response = { data };
-      res.send(response);
+      res.send(response.data);
     } catch (e) {
       next(e);
     }
