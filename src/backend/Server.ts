@@ -14,7 +14,4 @@ app.use("/dataProvider", dataProvider.router);
 
 app.listen(4444, "0.0.0.0", async () => {
   console.log("Data provider server started! Port: " + 4444);
-  const res = await axios.get(
-    "localhost:4444/dataProvider/КПЭ/getTableProperties"
-  );
 });

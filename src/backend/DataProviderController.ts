@@ -7,10 +7,10 @@ export class DataProviderController {
 
   constructor(private readonly dataProvider: DataProviderService) {
     this.router.get(
-      ":tableId/getTableProperties",
+      ":tableId/getTableData",
       handler((req) => {
         const tableId = req.params.tableId;
-        return this.dataProvider.getTableProperties(tableId);
+        return this.dataProvider.getTableData(tableId);
       })
     );
   }
