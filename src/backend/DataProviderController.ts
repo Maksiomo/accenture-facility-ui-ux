@@ -7,10 +7,10 @@ export class DataProviderController {
 
   constructor(private readonly dataProvider: DataProviderService) {
     this.router.get(
-      "/:facilityBlock/data",
+      ":tableId/getTableProperties",
       handler((req) => {
-        const block = req.params.facilityBlock as string;
-        return this.dataProvider.getBlockData(block);
+        const tableId = req.params.tableId;
+        return this.dataProvider.getTableProperties(tableId);
       })
     );
   }
