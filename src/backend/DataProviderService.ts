@@ -50,7 +50,8 @@ export class DataProviderService {
             const ws = wb.getWorksheet(1);
             ws.eachRow({ includeEmpty: false }, function (row, rowIndex) {
               const buffer: any = [];
-              for (let i = 2; i <= row.actualCellCount; i++) {
+              for (let i = 2; i <= row.actualCellCount + 1; i++) {
+                console.log(row.getCell(i).value);
                 buffer.push(row.getCell(i).value);
               }
               const obj: TableOneObj = {
@@ -108,7 +109,7 @@ export class DataProviderService {
           .readFile(this.tables[2].address)
           .then(function () {
             const res: TableThreeResourceUsage[] = [];
-            const ws = wb.getWorksheet(1);
+            const ws = wb.getWorksheet(2);
             ws.eachRow({ includeEmpty: false }, function (row, rowIndex) {
               const buffer: any = [];
               for (let i = 2; i <= row.actualCellCount; i++) {
@@ -133,19 +134,20 @@ export class DataProviderService {
           .readFile(this.tables[2].address)
           .then(function () {
             const res: TableThreeResourceLeftovers[] = [];
-            const ws = wb.getWorksheet(2);
+            const ws = wb.getWorksheet(3);
             ws.eachRow({ includeEmpty: false }, function (row, rowIndex) {
               const buffer: any = [];
               for (let i = 1; i <= row.actualCellCount; i++) {
                 buffer.push(row.getCell(i).value);
               }
-              const boolData = buffer[5] == "ИСТИНА" ? true : false;
               const obj: TableThreeResourceLeftovers = {
                 storageId: buffer[0],
                 storageName: buffer[1],
                 planningDate: buffer[3],
                 plannedStockAmount: Number(buffer[4]),
-                stockedMoreThanPlanned: boolData,
+                stockedMoreThanPlanned: Boolean(
+                  Number(buffer[4]) > Number(buffer[6])
+                ),
                 actualStockAmount: Number(buffer[6]),
               };
               res.push(obj);
