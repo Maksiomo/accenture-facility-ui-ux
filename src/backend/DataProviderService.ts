@@ -1,25 +1,35 @@
-import { IBlockStats } from "./types/IBlockStats";
+import { ITable } from "./types/ITable";
+import * as Exceljs from "exceljs";
 
 export class DataProviderService {
-  private allBlockStats: IBlockStats[] = [
+  private tables: ITable[] = [
     {
-      blockName: "Alpha",
-      status: "ok",
+      tableName: "КПЭ",
+      address: "./src/backend/dataSource/01.КПЭ.xlsx",
+      worksheet: {},
     },
     {
-      blockName: "Bravo",
-      status: "pending",
+      tableName: "Загрузка",
+      address: "./src/backend/dataSource/02.Загрузка оборудования.xlsx",
+      worksheet: {},
     },
     {
-      blockName: "Gamma",
-      status: "error",
+      tableName: "Анализ",
+      address: "./src/backend/dataSource/03.Анализ загрузки.xlsx",
+      worksheet: {},
     },
   ];
 
-  async getBlockData(reqBlock: string): Promise<IBlockStats> {
-    for (const block of this.allBlockStats) {
-      if (block.blockName == reqBlock) return block;
+  async getTableProperties(tableId: string): Promise<any> {
+    for (const table of this.tables) {
+      if (tableId == table.tableName) {
+        const wb = new Exceljs.Workbook();
+        wb.xlsx.readFile(table.address).then(function () {
+          console.log(wb.properties);
+        });
+      }
+      throw new Error("Invalid table");
     }
-    throw new Error("Invalid blockName");
+    return [];
   }
 }

@@ -5,17 +5,21 @@
     "main": "./src/index.ts",
     "scripts": {
         "build": "tsc",
-        "dev": "nodemon"
+        "dev": "nodemon",
+        "back": "ts-node ./src/backend/Server.ts"
     },
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "axios": "^0.23.0",
         "concurrently": "^6.3.0",
         "cors": "^2.8.5",
+        "exceljs": "^4.3.0",
         "express": "^4.17.1",
-        "nodemon": "^2.0.12",
+        "nodemon": "^2.0.14",
         "react": "^17.0.2",
         "ts-node": "^10.3.1",
+        "ts-xlsx": "0.0.11",
         "typescipt": "^1.0.0",
         "typescript": "^4.4.4"
     },
