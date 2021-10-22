@@ -51,7 +51,6 @@ export class DataProviderService {
             ws.eachRow({ includeEmpty: false }, function (row, rowIndex) {
               const buffer: any = [];
               for (let i = 2; i <= row.actualCellCount + 1; i++) {
-                console.log(row.getCell(i).value);
                 buffer.push(row.getCell(i).value);
               }
               const obj: TableOneObj = {
