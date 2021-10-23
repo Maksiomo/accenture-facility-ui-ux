@@ -13,5 +13,12 @@ export class DataProviderController {
         return this.dataProvider.getTableData(tableId);
       })
     );
+
+    this.router.get(
+      "/analyzeStock",
+      handler((req) => {
+        return this.dataProvider.analyzeResourceStock();
+      })
+    );
   }
 }

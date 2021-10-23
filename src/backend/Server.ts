@@ -1,7 +1,5 @@
 import express from "express";
 import cors from "cors";
-import axios from "axios";
-import handler from "./handler";
 import { DataProviderService } from "./DataProviderService";
 import { DataProviderController } from "./DataProviderController";
 
