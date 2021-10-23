@@ -27,6 +27,15 @@ code {
   max-width: 100%;
 }
 
+.inner-map {
+  display: flex;
+  justify-content: left;
+  align-items: left;
+  height: 100%;
+  width: 100%;
+  font-size: x-large;
+}
+
 .side-menu {
   display: flex;
   height: 100%;
@@ -120,6 +129,11 @@ code {
 }
 
 .info-item:hover {
+  margin-top: 0px;
+  margin-bottom: 4px;
+}
+
+.picked-info {
   margin-top: 0px;
   margin-bottom: 4px;
 }
