@@ -3,7 +3,7 @@ import LocalItemTwo from './LocalItemTwo';
 
 function LocalMenuTwo(props){
     return (
-        <ul className='horizontal-menu'>
+        <ul className='local-menu-two'>
             {props.items.map(item =>{
                 return (
                     <LocalItemTwo

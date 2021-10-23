@@ -90,6 +90,31 @@ code {
   background-color: #777;
 }
 
+.local-menu-two {
+  width: 100%;
+  height: auto;
+  overflow:auto;
+  white-space: nowrap;
+  background-color:#444;
+  text-align: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+.local-item-two {
+  display: inline-block;
+  color: white;
+  text-align: center;
+  padding: 14px;
+  text-decoration: none;
+  border-radius: 5%;
+}
+
+.lcoal-item-item:hover {
+  background-color: #888;
+}
+
 .vertical-menu {
   width: 100%;
   height: auto;

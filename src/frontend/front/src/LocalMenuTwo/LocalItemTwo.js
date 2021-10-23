@@ -10,7 +10,7 @@ function LocalItemTwo({item}){
     }
     
     return (
-        <li className='horizontal-item' onClick={pickLocalItemTwo.bind(null, item.id)}>
+        <li className='local-item-two' onClick={pickLocalItemTwo.bind(null, item.id)}>
             <span className={classes.join(' ')}>
                 {item.title}
             </span>
