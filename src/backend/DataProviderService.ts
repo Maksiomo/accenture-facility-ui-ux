@@ -6,6 +6,7 @@ import { TableThreeResourceUsage } from "./types/tableThreeResourceUsage";
 import { TableThreeResourceLeftovers } from "./types/tableThreeResourceLeftovers";
 import { IProblem } from "./types/IProblem";
 import { Config } from "./util/Config";
+import { StockProblem } from "./types/StockProblem";
 
 export class DataProviderService {
   config: Config = new Config();
@@ -168,8 +169,8 @@ export class DataProviderService {
     throw new Error("Invalid table");
   }
 
-  async analyzeResourceStock(): Promise<IProblem[] | string> {
-    const stockProblems: IProblem[] = [];
+  async analyzeResourceStock(): Promise<StockProblem[] | string> {
+    const stockProblems: StockProblem[] = [];
     const tableData = (await this.getTableData(
       "Запасы"
     )) as TableThreeResourceLeftovers[];
@@ -185,7 +186,27 @@ export class DataProviderService {
             employeeId: warehouse.employeeId,
             status: warehouse.status,
           };
-          stockProblems.push(problem);
+          let flag: boolean = false;
+          for (const stock of stockProblems) {
+            if (stock.objectId == problem.elementId) {
+              stock.problems.push({
+                problem: problem,
+                date: warehouse.planningDate,
+              });
+              flag = true;
+            }
+          }
+          if (!flag) {
+            stockProblems.push({
+              objectId: problem.elementId,
+              problems: [
+                {
+                  problem: problem,
+                  date: warehouse.planningDate,
+                },
+              ],
+            });
+          }
         } else if (ratio < this.config.stockRatioMin) {
           const problem: IProblem = {
             elementId: warehouse.storageId,
@@ -195,7 +216,27 @@ export class DataProviderService {
             employeeId: warehouse.employeeId,
             status: warehouse.status,
           };
-          stockProblems.push(problem);
+          let flag: boolean = false;
+          for (const stock of stockProblems) {
+            if (stock.objectId == problem.elementId) {
+              stock.problems.push({
+                problem: problem,
+                date: warehouse.planningDate,
+              });
+              flag = true;
+            }
+          }
+          if (!flag) {
+            stockProblems.push({
+              objectId: problem.elementId,
+              problems: [
+                {
+                  problem: problem,
+                  date: warehouse.planningDate,
+                },
+              ],
+            });
+          }
         }
       }
     }
