@@ -45,8 +45,8 @@ function App() {
     sendRequest("http://127.0.0.1:5555/dataProvider/analyzeStock").then(res =>{
       setInfos(res
         .data
-        .filter(item => item.dangerTier > 1)
-        .sort(function(a, b){return b.dangerTier - a.dangerTier})
+        .filter(item => item.problems[0].problem.dangerTier > 1)
+        .sort(function(a, b){return b.problems[0].problem.dangerTier - a.problems[0].problem.dangerTier})
         )
     });
   }
@@ -56,7 +56,7 @@ function App() {
     sendRequest("http://127.0.0.1:5555/dataProvider/analyzeStock").then(res =>{
       setInfos(res
         .data
-        .sort(function(a, b){return b.dangerTier - a.dangerTier})
+        .sort(function(a, b){return b.problems[0].problem.dangerTier - a.problems[0].problem.dangerTier})
         )
     });
   }
