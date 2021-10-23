@@ -146,11 +146,11 @@ export class DataProviderService {
                 storageId: buffer[0],
                 storageName: buffer[1],
                 planningDate: buffer[3],
-                plannedStockAmount: Number(buffer[4]),
+                actualStockAmount: Number(buffer[4]),
                 stockedMoreThanPlanned: Boolean(
                   Number(buffer[4]) > Number(buffer[6])
                 ),
-                actualStockAmount: Number(buffer[6]),
+                maxStockAmount: Number(buffer[6]),
                 employeeId: buffer[7],
                 status: buffer[8],
               };
@@ -171,9 +171,11 @@ export class DataProviderService {
       "Запасы"
     )) as TableThreeResourceLeftovers[];
     for (const warehouse of tableData) {
-      const ratio = warehouse.actualStockAmount / warehouse.plannedStockAmount;
+      const ratio = warehouse.actualStockAmount / warehouse.maxStockAmount;
       if (ratio > 1) {
         const problem: IProblem = {
+          elementId: warehouse.storageId,
+          elementName: warehouse.storageName,
           legend: "Превышен лимит заготовки",
           dangerTier: ratio - 1,
           employeeId: warehouse.employeeId,
@@ -182,8 +184,10 @@ export class DataProviderService {
         stockProblems.push(problem);
       } else if (ratio < 0.85) {
         const problem: IProblem = {
+          elementId: warehouse.storageId,
+          elementName: warehouse.storageName,
           legend: "Лимит заготовки не достигнут",
-          dangerTier: 1 - ratio,
+          dangerTier: 0.85 - ratio,
           employeeId: warehouse.employeeId,
           status: warehouse.status,
         };
