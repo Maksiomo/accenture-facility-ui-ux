@@ -10,6 +10,7 @@ import PlanOptionMenu from "./OptionsMenu/PlanOptionsMenu";
 import VerticalMenu from "./VerticalMenu/VerticalMenu";
 import LocalMenuTwo from "./LocalMenuTwo/LocalMenuTwo";
 import LocalMenuThree from "./LocalMenuThree/LocalMenuThree";
+import SearchInfo from "./SearchInfo";
 
 function App() {
   const [items, setItems] = React.useState([
@@ -19,11 +20,11 @@ function App() {
   ]);
   const [localItemsTwo, setLocalItemsTwo] = React.useState([
     { title: "Визуализация загрузки агрегатов", id: 0, picked: false },
-    { title: "Визуализация загрузки складов", id: 1, picked: false },
+    { title: "Визуализация загрузки складов", id: 1, picked: true },
   ]);
   const [localItemsThree, setLocalItemsThree] = React.useState([
     { title: "Проблемы загрузки агрегатов", id: 0, picked: false },
-    { title: "Проблемы загрузки складов", id: 1, picked: false },
+    { title: "Проблемы загрузки складов", id: 1, picked: true },
   ]);
   const [options, setOptions] = React.useState([
     { title: "Показать более опасные", id: 0, picked: true },
@@ -45,14 +46,41 @@ function App() {
   const [panel, setPanel] = React.useState(true);
   const [plan, setPlan] = React.useState(false);
   const [problem, setProblem] = React.useState(false);
+  const [two, setTwo] = React.useState(true);
+  const [three, setThree] = React.useState(true);
   const [allInfo, setAllInfo] = React.useState();
 
   useEffect(() => {
     getDangerInfo();
   }, []);
 
+  function getDangerLoad() {
+    sendRequest("http://127.0.0.1:5555/dataProvider/analyzeLoad").then(
+      (res) => {
+        setInfos(
+          res.data
+            .filter((item) => item.averageDangerTier > 1)
+            .sort(function (a, b) {
+              return b.averageDangerTier - a.averageDangerTier;
+            })
+        );
+      }
+    );
+  }
+
+  function getAllLoad() {
+    sendRequest("http://127.0.0.1:5555/dataProvider/analyzeLoad").then(
+      (res) => {
+        setInfos(
+          res.data.sort(function (a, b) {
+            return b.averageDangerTier - a.averageDangerTier;
+          })
+        );
+      }
+    );
+  }
+
   function getDangerInfo() {
-    setLoading(true);
     sendRequest("http://127.0.0.1:5555/dataProvider/analyzeStock").then(
       (res) => {
         setInfos(
@@ -67,7 +95,6 @@ function App() {
   }
 
   function getAllInfo() {
-    setLoading(true);
     sendRequest("http://127.0.0.1:5555/dataProvider/analyzeStock").then(
       (res) => {
         setInfos(
@@ -136,10 +163,20 @@ function App() {
       options.map((option) => {
         option.picked = option.id === id;
         if (id === 0) {
-          getDangerInfo();
+          if(three){
+            getDangerInfo();
+          }
+          else{
+            getDangerLoad();
+          }
         }
         if (id === 1) {
-          getAllInfo();
+          if(three){
+            getAllInfo();
+          }
+          else{
+            getAllLoad();
+          }
         }
         return option;
       })
@@ -154,6 +191,12 @@ function App() {
     setLocalItemsTwo(
       localItemsTwo.map((item) => {
         item.picked = item.id === id;
+        if(id === 0){
+          setTwo(false);
+        }
+        if(id === 1){
+          setTwo(true);
+        }
         return item;
       })
     );
@@ -163,6 +206,12 @@ function App() {
     setLocalItemsThree(
       localItemsThree.map((item) => {
         item.picked = item.id === id;
+        if(id === 0){
+          setThree(false);
+        }
+        if(id === 1){
+          setThree(true);
+        }
         return item;
       })
     );
@@ -175,6 +224,10 @@ function App() {
         return option;
       })
     );
+  }
+
+  function updateInfo(id) {
+    setInfos(infos)
   }
 
   const [graph, setGraph] = React.useState(true);
@@ -203,6 +256,7 @@ function App() {
         pickGraph,
         pickLocalItemTwo,
         pickLocalItemThree,
+        updateInfo,
       }}
     >
       <div>
@@ -213,7 +267,7 @@ function App() {
       <div className="wrapper">
         <div className="map">
           {panel && graph ? <BarGraphics data={graphs} /> : null}
-          {problem && allInfo ? (
+          {problem && three && allInfo ? (
             <div className="inner-map">
               <AllInfo item={allInfo} />
             </div>
