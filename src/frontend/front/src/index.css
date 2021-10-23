@@ -111,7 +111,8 @@ code {
 
 .info-item {
   color: black;
-  background-color: lightgreen;
+  background-color: rgb(255, 255, 255);
+  border: 1px solid #333;
   padding: 14px;
   text-decoration: none;
 }
@@ -145,20 +146,4 @@ code {
   100% {
     transform: rotate(360deg);
   }
-}
-
-.warning {
-  background-color: gold;
-}
-
-.warning:hover {
-  background-color: lightgoldenrodyellow;
-}
-
-.danger {
-  background-color: crimson;
-}
-
-.danger:hover {
-  background-color: lightcoral;
 }

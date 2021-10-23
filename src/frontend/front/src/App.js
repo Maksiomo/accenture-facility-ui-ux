@@ -25,27 +25,29 @@ function App() {
     ]);
   const [infos, setInfos] = React.useState(
     [
-      {description: 'Тест0', id: 0, data: 0, dangerTear: 'normal'},
-      {description: 'Тест0', id: 0, data: 0, dangerTear: 'normal'},
-      {description: 'Тест5', id: 15, data: 5, dangerTear: 'warning'},
-      {description: 'Тест5', id: 25, data: 5, dangerTear: 'danger'},
-      {description: 'Тест0', id: 0, data: 0, dangerTear: 'normal'},
-      {description: 'Тест0', id: 0, data: 0, dangerTear: 'normal'},
-      {description: 'Тест5', id: 15, data: 5, dangerTear: 'warning'},
-      {description: 'Тест5', id: 25, data: 5, dangerTear: 'danger'},
-      {description: 'Тест0', id: 0, data: 0, dangerTear: 'normal'},
-      {description: 'Тест0', id: 0, data: 0, dangerTear: 'normal'},
-      {description: 'Тест5', id: 15, data: 5, dangerTear: 'warning'},
-      {description: 'Тест5', id: 25, data: 5, dangerTear: 'danger'},
-      {description: 'Тест0', id: 0, data: 0, dangerTear: 'normal'},
-      {description: 'Тест0', id: 0, data: 0, dangerTear: 'normal'},
-      {description: 'Тест5', id: 15, data: 5, dangerTear: 'warning'},
-      {description: 'Тест5', id: 25, data: 5, dangerTear: 'danger'},
-      {description: 'Тест0', id: 0, data: 0, dangerTear: 'normal'},
-      {description: 'Тест0', id: 0, data: 0, dangerTear: 'normal'},
-      {description: 'Тест5', id: 15, data: 5, dangerTear: 'warning'},
-      {description: 'Тест5', id: 25, data: 5, dangerTear: 'danger'},
+      {description: 'Тест0', id: 0, data: 0, dangerTear: 0},
+      {description: 'Тест0', id: 0, data: 0, dangerTear: 5},
+      {description: 'Тест5', id: 15, data: 5, dangerTear: 14},
+      {description: 'Тест5', id: 25, data: 5, dangerTear: 28},
+      {description: 'Тест0', id: 0, data: 0, dangerTear: 11},
+      {description: 'Тест0', id: 0, data: 0, dangerTear: 107},
+      {description: 'Тест5', id: 15, data: 5, dangerTear: 92},
+      {description: 'Тест5', id: 25, data: 5, dangerTear: 4},
+      {description: 'Тест0', id: 0, data: 0, dangerTear: 0},
+      {description: 'Тест0', id: 0, data: 0, dangerTear: 100},
+      {description: 'Тест5', id: 15, data: 5, dangerTear: 6},
+      {description: 'Тест5', id: 25, data: 5, dangerTear: 8},
+      {description: 'Тест0', id: 0, data: 0, dangerTear: 72},
+      {description: 'Тест0', id: 0, data: 0, dangerTear: 60},
+      {description: 'Тест5', id: 15, data: 5, dangerTear: 20},
+      {description: 'Тест5', id: 25, data: 5, dangerTear: 3},
+      {description: 'Тест0', id: 0, data: 0, dangerTear: 4},
+      {description: 'Тест0', id: 0, data: 0, dangerTear: 0},
+      {description: 'Тест5', id: 15, data: 5, dangerTear: 0},
+      {description: 'Тест5', id: 25, data: 5, dangerTear: 0},
     ]);
+
+  infos.sort(function(a, b){return b.dangerTear - a.dangerTear});
 
   const [loading, setLoading] = React.useState(true);
   const [panel, setPanel] = React.useState(true);
