@@ -1,14 +1,14 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
 
@@ -30,7 +30,7 @@ code {
 .inner-map {
   justify-content: left;
   align-items: left;
-  overflow:auto;
+  overflow: auto;
   height: 100%;
   width: 100%;
 }
@@ -68,9 +68,9 @@ code {
 .horizontal-menu {
   width: 100%;
   height: auto;
-  overflow:auto;
+  overflow: auto;
   white-space: nowrap;
-  background-color:#333;
+  background-color: #333;
   text-align: center;
   align-items: center;
   margin: 0;
@@ -93,9 +93,9 @@ code {
 .local-menu-two {
   width: 100%;
   height: auto;
-  overflow:auto;
+  overflow: auto;
   white-space: nowrap;
-  background-color:#444;
+  background-color: #444;
   text-align: center;
   align-items: center;
   margin: 0;
@@ -111,14 +111,14 @@ code {
   border-radius: 5%;
 }
 
-.lcoal-item-item:hover {
+.local-item-two:hover {
   background-color: #888;
 }
 
 .vertical-menu {
   width: 100%;
   height: auto;
-  overflow:auto;
+  overflow: auto;
   margin: 0;
   padding: 0;
   background-color: #333;

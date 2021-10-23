@@ -17,8 +17,8 @@ function App() {
     { title: "Проблемы", id: 2, picked: false },
   ]);
   const [localItemsTwo, setLocalItemsTwo] = React.useState([
-    { title: "Проблемы загрузки", id: 0, picked: false },
-    { title: "Проблемы складов", id: 1, picked: false },
+    { title: "Визуализация загрузки агрегатов", id: 0, picked: false },
+    { title: "Визуализация загрузки складов", id: 1, picked: false },
   ]);
   const [options, setOptions] = React.useState([
     { title: "Показать более опасные", id: 0, picked: true },
