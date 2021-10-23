@@ -241,7 +241,6 @@ export class DataProviderService {
       }
     }
     if (stockProblems.length > 0) {
-      console.log(stockProblems.length);
       return stockProblems;
     } else {
       return "Склады функционируют в пределах нормы";
