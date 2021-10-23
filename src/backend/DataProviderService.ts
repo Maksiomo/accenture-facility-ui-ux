@@ -142,7 +142,7 @@ export class DataProviderService {
             const ws = wb.getWorksheet(3);
             ws.eachRow({ includeEmpty: false }, function (row, rowIndex) {
               const buffer: any = [];
-              for (let i = 1; i <= row.actualCellCount; i++) {
+              for (let i = 1; i <= row.actualCellCount + 1; i++) {
                 buffer.push(row.getCell(i).value);
               }
               const obj: TableThreeResourceLeftovers = {
@@ -179,7 +179,7 @@ export class DataProviderService {
         const problem: IProblem = {
           elementId: warehouse.storageId,
           elementName: warehouse.storageName,
-          legend: "Превышен лимит заготовки",
+          legend: "Превышен лимит заготовки ресурса",
           dangerTier: ratio - this.config.stockRatioMax,
           employeeId: warehouse.employeeId,
           status: warehouse.status,
