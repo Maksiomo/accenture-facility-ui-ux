@@ -174,27 +174,29 @@ export class DataProviderService {
       "Запасы"
     )) as TableThreeResourceLeftovers[];
     for (const warehouse of tableData) {
-      const ratio = warehouse.actualStockAmount / warehouse.maxStockAmount;
-      if (ratio > this.config.stockRatioMax) {
-        const problem: IProblem = {
-          elementId: warehouse.storageId,
-          elementName: warehouse.storageName,
-          legend: "Превышен лимит заготовки ресурса",
-          dangerTier: ratio - this.config.stockRatioMax,
-          employeeId: warehouse.employeeId,
-          status: warehouse.status,
-        };
-        stockProblems.push(problem);
-      } else if (ratio < this.config.stockRatioMin) {
-        const problem: IProblem = {
-          elementId: warehouse.storageId,
-          elementName: warehouse.storageName,
-          legend: "Лимит заготовки не достигнут",
-          dangerTier: this.config.stockRatioMin - ratio,
-          employeeId: warehouse.employeeId,
-          status: warehouse.status,
-        };
-        stockProblems.push(problem);
+      if (warehouse.maxStockAmount > 0) {
+        const ratio = warehouse.actualStockAmount / warehouse.maxStockAmount;
+        if (ratio > this.config.stockRatioMax) {
+          const problem: IProblem = {
+            elementId: warehouse.storageId,
+            elementName: warehouse.storageName,
+            legend: "Превышен лимит заготовки ресурса",
+            dangerTier: ratio - this.config.stockRatioMax,
+            employeeId: warehouse.employeeId,
+            status: warehouse.status,
+          };
+          stockProblems.push(problem);
+        } else if (ratio < this.config.stockRatioMin) {
+          const problem: IProblem = {
+            elementId: warehouse.storageId,
+            elementName: warehouse.storageName,
+            legend: "Лимит заготовки не достигнут",
+            dangerTier: this.config.stockRatioMin - ratio,
+            employeeId: warehouse.employeeId,
+            status: warehouse.status,
+          };
+          stockProblems.push(problem);
+        }
       }
     }
     if (stockProblems.length > 0) {
