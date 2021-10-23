@@ -255,7 +255,8 @@ function App() {
           {panel && graph ? <BarGraphics data={graphs} /> : null}
           {problem ? (
             <div className="inner-map">
-              {three ? <AllInfo item={allInfo} /> : <AllInfoLoad item={allInfoLoad}/>}
+              {three && allInfo ? <AllInfo item={allInfo} /> : null}
+              {!three && allInfoLoad ? <AllInfoLoad item={allInfoLoad}/> : null}
             </div>
           ) : null}
         </div>
