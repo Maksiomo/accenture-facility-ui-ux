@@ -199,6 +199,7 @@ export class DataProviderService {
           if (!flag) {
             stockProblems.push({
               objectId: problem.elementId,
+              averageDangerTier: 0,
               problems: [
                 {
                   problem: problem,
@@ -229,6 +230,7 @@ export class DataProviderService {
           if (!flag) {
             stockProblems.push({
               objectId: problem.elementId,
+              averageDangerTier: 0,
               problems: [
                 {
                   problem: problem,
@@ -241,6 +243,14 @@ export class DataProviderService {
       }
     }
     if (stockProblems.length > 0) {
+      for (const stock of stockProblems) {
+        let avrgDangerTier = 0;
+        for (const problem of stock.problems) {
+          avrgDangerTier += problem.problem.dangerTier;
+        }
+        avrgDangerTier /= stock.problems.length;
+        stock.averageDangerTier = avrgDangerTier;
+      }
       return stockProblems;
     } else {
       return "Склады функционируют в пределах нормы";
