@@ -8,7 +8,7 @@ function InfoMenu(props){
                 return (
                     <InfoItem
                         info = {info}
-                        key = {info.elementId}
+                        key = {info.objectId}
                     />
                 )
             })}

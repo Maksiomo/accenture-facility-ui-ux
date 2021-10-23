@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect } from "react";
 import AllInfo from "./AllInfo";
+import BarGraphics from "./BarGraphics";
 import Context from "./Context";
 import HorizontalMenu from "./HorizontalMenu/HorizontalMenu";
 import InfoMenu from "./InfoMenu/InfoMenu";
@@ -22,6 +23,11 @@ function App() {
     { title: "Смотреть выгрузку по...", id: 0, picked: false },
     { title: "Сверить по дате", id: 1, picked: false },
   ]);
+  const [graphs, setGraphs] = React.useState([
+    {name: 'First group', id: 0, я: 400, календарь: 2400, переверну: 2400}, 
+    {name: 'Second group',id: 1, я: 350, календарь: 988, переверну: 400},
+    {name: 'Third group', id: 2, я: 135, календарь: 200, переверну: 540},
+    {name: 'Fourth group', id: 3, я: 333, календарь: 920, переверну: 211},]);
   const [infos, setInfos] = React.useState([]);
 
   const [loading, setLoading] = React.useState(false);
@@ -135,14 +141,35 @@ function App() {
     );
   }
 
+
+
+const [graph, setGraph] = React.useState(true);
+
+function showGraph(){
+    setPanel(false);
+    setPlan(false);
+    setProblem(false);
+    setGraph(true);
+    setGraphs(graphs.map(
+      gr => {
+        return gr;
+      }
+    ))
+  }
+
+function pickGraph(id){
+
+}
+
   return (
-    <Context.Provider value={{ pickItem, pickOption, pickPlanOption, pickInfo }}>
+    <Context.Provider value={{ pickItem, pickOption, pickPlanOption, pickInfo, pickGraph }}>
       <div>
         <HorizontalMenu items={items} />
       </div>
       <div className="wrapper">
         <div className="map">
-          <div className='inner-map'>{(problem && allInfo) ? <AllInfo item={allInfo}/> : null}</div>
+          {(panel && graph) ? <BarGraphics data={graphs}/> : null}
+          {(problem && allInfo) ? <div className='inner-map'><AllInfo item={allInfo}/></div> : null}
         </div>
         {problem ? (
           <div className="side-menu">
