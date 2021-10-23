@@ -3,6 +3,7 @@ import Context from "./Context";
 import HorizontalMenu from "./HorizontalMenu/HorizontalMenu";
 import InfoMenu from "./InfoMenu/InfoMenu";
 import Loader from "./Loader";
+import PlanOptionMenu from "./OptionsMenu/PlanOptionsMenu";
 import VerticalMenu from "./VerticalMenu/VerticalMenu";
 
 function App() {
@@ -17,20 +18,77 @@ function App() {
         {title: 'Сделать хорошо', id: 0, picked: false},
         {title: 'Сделать плохо', id: 1, picked: false},
       ]);
+  const [planOptions, setPlanOptions] = React.useState(
+    [
+      {title: 'Смотреть выгрузку по...', id: 0, picked: false},
+      {title: 'Сверить по дате', id: 1, picked: false},
+    ]);
   const [infos, setInfos] = React.useState(
     [
-      {disk: 'Тест0', id: 0, data: 0, dangerTear: 'normal'},
-      {disk: 'Тест0', id: 0, data: 0, dangerTear: 'normal'},
-      {disk: 'Тест5', id: 15, data: 5, dangerTear: 'warning'},
-      {disk: 'Тест5', id: 25, data: 5, dangerTear: 'danger'},
+      {description: 'Тест0', id: 0, data: 0, dangerTear: 'normal'},
+      {description: 'Тест0', id: 0, data: 0, dangerTear: 'normal'},
+      {description: 'Тест5', id: 15, data: 5, dangerTear: 'warning'},
+      {description: 'Тест5', id: 25, data: 5, dangerTear: 'danger'},
+      {description: 'Тест0', id: 0, data: 0, dangerTear: 'normal'},
+      {description: 'Тест0', id: 0, data: 0, dangerTear: 'normal'},
+      {description: 'Тест5', id: 15, data: 5, dangerTear: 'warning'},
+      {description: 'Тест5', id: 25, data: 5, dangerTear: 'danger'},
+      {description: 'Тест0', id: 0, data: 0, dangerTear: 'normal'},
+      {description: 'Тест0', id: 0, data: 0, dangerTear: 'normal'},
+      {description: 'Тест5', id: 15, data: 5, dangerTear: 'warning'},
+      {description: 'Тест5', id: 25, data: 5, dangerTear: 'danger'},
+      {description: 'Тест0', id: 0, data: 0, dangerTear: 'normal'},
+      {description: 'Тест0', id: 0, data: 0, dangerTear: 'normal'},
+      {description: 'Тест5', id: 15, data: 5, dangerTear: 'warning'},
+      {description: 'Тест5', id: 25, data: 5, dangerTear: 'danger'},
+      {description: 'Тест0', id: 0, data: 0, dangerTear: 'normal'},
+      {description: 'Тест0', id: 0, data: 0, dangerTear: 'normal'},
+      {description: 'Тест5', id: 15, data: 5, dangerTear: 'warning'},
+      {description: 'Тест5', id: 25, data: 5, dangerTear: 'danger'},
     ]);
 
   const [loading, setLoading] = React.useState(true);
+  const [panel, setPanel] = React.useState(true);
+  const [plan, setPlan] = React.useState(false);
+  const [problem, setProblem] = React.useState(false);
+
+  function showPanel(){
+    setPanel(true);
+    setPlan(false);
+    setProblem(false);
+  }
+
+  function showPlan(){
+    setPanel(false);
+    setPlan(true);
+    setProblem(false);
+    setPlanOptions(planOptions.map(
+      option => {
+        option.picked = false;
+        return option;
+      }
+    ))
+  }
+
+  function showProblem(){
+    setPanel(false);
+    setPlan(false);
+    setProblem(true);
+    setOptions(options.map(
+      option => {
+        option.picked = false;
+        return option;
+      }
+    ))
+  }
 
   function pickItem(id){
     setItems(
       items.map(item =>{
         item.picked = (item.id === id);
+        if(id === 0){ showPanel() };
+        if(id === 1){ showPlan() };
+        if(id === 2){ showProblem() };
         return item;
       })
     )
@@ -45,8 +103,17 @@ function App() {
     )
   }
 
+  function pickPlanOption(id){
+    setPlanOptions(
+      planOptions.map(option =>{
+        option.picked = (option.id === id);
+        return option;
+      })
+    )
+  }
+
   return (
-    <Context.Provider value={{pickItem, pickOption}}>
+    <Context.Provider value={{pickItem, pickOption, pickPlanOption}}>
       <div>
         <HorizontalMenu items={items}/>
       </div>
@@ -54,14 +121,19 @@ function App() {
         <div className='map'>
           {loading && <Loader/>}
         </div>
-        <div className='side-menu'>
+        {problem ? <div className='side-menu'>
           <div className='legent'>
             <InfoMenu infos={infos}/>
           </div>
           <div className='vertical-menu-div'>
             <VerticalMenu options={options}/>
           </div>
-        </div>
+        </div> : null}
+        {plan ? <div className='side-menu'>
+          <div className='vertical-menu-div'>
+            <PlanOptionMenu options={planOptions}/>
+          </div>
+        </div> : null}
       </div>
     </Context.Provider>
   );

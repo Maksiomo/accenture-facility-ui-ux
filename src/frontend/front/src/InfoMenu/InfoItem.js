@@ -16,7 +16,7 @@ function InfoItem({info}){
     return (
         <li className={classes.join(' ')}>
             <span>
-                {info.disk}
+                {info.description}
                 &nbsp;
                 <strong>{info.data}</strong>
             </span>

@@ -23,7 +23,8 @@ code {
   justify-content: center;
   align-items: center;
   height: 100%;
-  width: 60%;
+  width: 100%;
+  max-width: 100%;
 }
 
 .side-menu {
@@ -147,11 +148,11 @@ code {
 }
 
 .warning {
-  background-color: lightsalmon;
+  background-color: gold;
 }
 
 .warning:hover {
-  background-color: salmon;
+  background-color: lightgoldenrodyellow;
 }
 
 .danger {
@@ -159,5 +160,5 @@ code {
 }
 
 .danger:hover {
-  background-color: darkred;
+  background-color: lightcoral;
 }
