@@ -9,6 +9,7 @@ import Loader from "./Loader";
 import PlanOptionMenu from "./OptionsMenu/PlanOptionsMenu";
 import VerticalMenu from "./VerticalMenu/VerticalMenu";
 import LocalMenuTwo from "./LocalMenuTwo/LocalMenuTwo";
+import LocalMenuThree from "./LocalMenuThree/LocalMenuThree";
 
 function App() {
   const [items, setItems] = React.useState([
@@ -19,6 +20,10 @@ function App() {
   const [localItemsTwo, setLocalItemsTwo] = React.useState([
     { title: "Визуализация загрузки агрегатов", id: 0, picked: false },
     { title: "Визуализация загрузки складов", id: 1, picked: false },
+  ]);
+  const [localItemsThree, setLocalItemsThree] = React.useState([
+    { title: "Проблемы загрузки агрегатов", id: 0, picked: false },
+    { title: "Проблемы загрузки складов", id: 1, picked: false },
   ]);
   const [options, setOptions] = React.useState([
     { title: "Показать более опасные", id: 0, picked: true },
@@ -154,6 +159,15 @@ function App() {
     );
   }
 
+  function pickLocalItemThree(id) {
+    setLocalItemsThree(
+      localItemsThree.map((item) => {
+        item.picked = item.id === id;
+        return item;
+      })
+    );
+  }
+
   function pickPlanOption(id) {
     setPlanOptions(
       planOptions.map((option) => {
@@ -188,11 +202,13 @@ function App() {
         pickInfo,
         pickGraph,
         pickLocalItemTwo,
+        pickLocalItemThree,
       }}
     >
       <div>
         <HorizontalMenu items={items} />
         {plan ? <LocalMenuTwo items={localItemsTwo} /> : null}
+        {problem ? <LocalMenuThree items={localItemsThree} /> : null}
       </div>
       <div className="wrapper">
         <div className="map">
