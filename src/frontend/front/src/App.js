@@ -8,6 +8,7 @@ import InfoMenu from "./InfoMenu/InfoMenu";
 import Loader from "./Loader";
 import PlanOptionMenu from "./OptionsMenu/PlanOptionsMenu";
 import VerticalMenu from "./VerticalMenu/VerticalMenu";
+import LocalMenuTwo from "./LocalMenuTwo/LocalMenuTwo";
 
 function App() {
   const [items, setItems] = React.useState([
@@ -28,10 +29,11 @@ function App() {
     { title: "Сверить по дате", id: 1, picked: false },
   ]);
   const [graphs, setGraphs] = React.useState([
-    {name: 'First group', id: 0, я: 400, календарь: 2400, переверну: 2400}, 
-    {name: 'Second group',id: 1, я: 350, календарь: 988, переверну: 400},
-    {name: 'Third group', id: 2, я: 135, календарь: 200, переверну: 540},
-    {name: 'Fourth group', id: 3, я: 333, календарь: 920, переверну: 211},]);
+    { name: "First group", id: 0, я: 400, календарь: 2400, переверну: 2400 },
+    { name: "Second group", id: 1, я: 350, календарь: 988, переверну: 400 },
+    { name: "Third group", id: 2, я: 135, календарь: 200, переверну: 540 },
+    { name: "Fourth group", id: 3, я: 333, календарь: 920, переверну: 211 },
+  ]);
   const [infos, setInfos] = React.useState([]);
 
   const [loading, setLoading] = React.useState(false);
@@ -41,28 +43,35 @@ function App() {
   const [allInfo, setAllInfo] = React.useState();
 
   useEffect(() => {
-    getDangerInfo()
+    getDangerInfo();
   }, []);
 
-  function getDangerInfo(){
+  function getDangerInfo() {
     setLoading(true);
-    sendRequest("http://127.0.0.1:5555/dataProvider/analyzeStock").then(res =>{
-      setInfos(res
-        .data
-        .filter(item => item.averageDangerTier > 1)
-        .sort(function(a, b){return b.averageDangerTier - a.averageDangerTier})
-        )
-    });
+    sendRequest("http://127.0.0.1:5555/dataProvider/analyzeStock").then(
+      (res) => {
+        setInfos(
+          res.data
+            .filter((item) => item.averageDangerTier > 1)
+            .sort(function (a, b) {
+              return b.averageDangerTier - a.averageDangerTier;
+            })
+        );
+      }
+    );
   }
 
-  function getAllInfo(){
+  function getAllInfo() {
     setLoading(true);
-    sendRequest("http://127.0.0.1:5555/dataProvider/analyzeStock").then(res =>{
-      setInfos(res
-        .data
-        .sort(function(a, b){return b.averageDangerTier - a.averageDangerTier})
-        )
-    });
+    sendRequest("http://127.0.0.1:5555/dataProvider/analyzeStock").then(
+      (res) => {
+        setInfos(
+          res.data.sort(function (a, b) {
+            return b.averageDangerTier - a.averageDangerTier;
+          })
+        );
+      }
+    );
   }
 
   async function sendRequest(url) {
@@ -121,10 +130,10 @@ function App() {
     setOptions(
       options.map((option) => {
         option.picked = option.id === id;
-        if(id === 0){
+        if (id === 0) {
           getDangerInfo();
         }
-        if(id === 1){
+        if (id === 1) {
           getAllInfo();
         }
         return option;
@@ -138,11 +147,11 @@ function App() {
 
   function pickLocalItemTwo(id) {
     setLocalItemsTwo(
-      localItemsTwo.map(item =>{
+      localItemsTwo.map((item) => {
         item.picked = item.id === id;
         return item;
       })
-    )
+    );
   }
 
   function pickPlanOption(id) {
@@ -154,36 +163,45 @@ function App() {
     );
   }
 
+  const [graph, setGraph] = React.useState(true);
 
-
-const [graph, setGraph] = React.useState(true);
-
-function showGraph(){
+  function showGraph() {
     setPanel(false);
     setPlan(false);
     setProblem(false);
     setGraph(true);
-    setGraphs(graphs.map(
-      gr => {
+    setGraphs(
+      graphs.map((gr) => {
         return gr;
-      }
-    ))
+      })
+    );
   }
 
-function pickGraph(id){
-
-}
+  function pickGraph(id) {}
 
   return (
-    <Context.Provider value={{ pickItem, pickOption, pickPlanOption, pickInfo, pickGraph, pickLocalItemTwo }}>
+    <Context.Provider
+      value={{
+        pickItem,
+        pickOption,
+        pickPlanOption,
+        pickInfo,
+        pickGraph,
+        pickLocalItemTwo,
+      }}
+    >
       <div>
         <HorizontalMenu items={items} />
-        {plan ? <LocalMenuTwo/> : null} 
+        {plan ? <LocalMenuTwo items={localItemsTwo} /> : null}
       </div>
       <div className="wrapper">
         <div className="map">
-          {(panel && graph) ? <BarGraphics data={graphs}/> : null}
-          {(problem && allInfo) ? <div className='inner-map'><AllInfo item={allInfo}/></div> : null}
+          {panel && graph ? <BarGraphics data={graphs} /> : null}
+          {problem && allInfo ? (
+            <div className="inner-map">
+              <AllInfo item={allInfo} />
+            </div>
+          ) : null}
         </div>
         {problem ? (
           <div className="side-menu">
