@@ -1,6 +1,6 @@
 import axios from "axios";
-import { func } from "prop-types";
 import React, { useEffect } from "react";
+import AllInfo from "./AllInfo";
 import Context from "./Context";
 import HorizontalMenu from "./HorizontalMenu/HorizontalMenu";
 import InfoMenu from "./InfoMenu/InfoMenu";
@@ -15,25 +15,45 @@ function App() {
     { title: "Проблемы", id: 2, picked: false },
   ]);
   const [options, setOptions] = React.useState([
-    { title: "Сделать хорошо", id: 0, picked: false },
-    { title: "Сделать плохо", id: 1, picked: false },
+    { title: "Показать более опасные", id: 0, picked: true },
+    { title: "Показать все", id: 1, picked: false },
   ]);
   const [planOptions, setPlanOptions] = React.useState([
     { title: "Смотреть выгрузку по...", id: 0, picked: false },
     { title: "Сверить по дате", id: 1, picked: false },
   ]);
-  const [infos, setInfos] = React.useState([
-    { elementName: "Тест0", elementId: 0, legent: 0, dangerTier: 0 },
-  ]);
+  const [infos, setInfos] = React.useState([]);
 
-  const [loading, setLoading] = React.useState(true);
+  const [loading, setLoading] = React.useState(false);
   const [panel, setPanel] = React.useState(true);
   const [plan, setPlan] = React.useState(false);
   const [problem, setProblem] = React.useState(false);
+  const [allInfo, setAllInfo] = React.useState();
 
   useEffect(() => {
-    sendRequest("http://127.0.0.1:5555/dataProvider/analyzeStock");
+    getDangerInfo()
   }, []);
+
+  function getDangerInfo(){
+    setLoading(true);
+    sendRequest("http://127.0.0.1:5555/dataProvider/analyzeStock").then(res =>{
+      setInfos(res
+        .data
+        .filter(item => item.dangerTier > 1)
+        .sort(function(a, b){return b.dangerTier - a.dangerTier})
+        )
+    });
+  }
+
+  function getAllInfo(){
+    setLoading(true);
+    sendRequest("http://127.0.0.1:5555/dataProvider/analyzeStock").then(res =>{
+      setInfos(res
+        .data
+        .sort(function(a, b){return b.dangerTier - a.dangerTier})
+        )
+    });
+  }
 
   async function sendRequest(url) {
     return await axios.get(url);
@@ -91,9 +111,19 @@ function App() {
     setOptions(
       options.map((option) => {
         option.picked = option.id === id;
+        if(id === 0){
+          getDangerInfo();
+        }
+        if(id === 1){
+          getAllInfo();
+        }
         return option;
       })
     );
+  }
+
+  function pickInfo(info) {
+    setAllInfo(info);
   }
 
   function pickPlanOption(id) {
@@ -106,12 +136,14 @@ function App() {
   }
 
   return (
-    <Context.Provider value={{ pickItem, pickOption, pickPlanOption }}>
+    <Context.Provider value={{ pickItem, pickOption, pickPlanOption, pickInfo }}>
       <div>
         <HorizontalMenu items={items} />
       </div>
       <div className="wrapper">
-        <div className="map">{loading && <Loader />}</div>
+        <div className="map">
+          <div className='inner-map'>{allInfo ? <AllInfo item={allInfo}/> : null}</div>
+        </div>
         {problem ? (
           <div className="side-menu">
             <div className="legent">
