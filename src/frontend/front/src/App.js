@@ -142,7 +142,7 @@ function App() {
       </div>
       <div className="wrapper">
         <div className="map">
-          <div className='inner-map'>{allInfo ? <AllInfo item={allInfo}/> : null}</div>
+          <div className='inner-map'>{(problem && allInfo) ? <AllInfo item={allInfo}/> : null}</div>
         </div>
         {problem ? (
           <div className="side-menu">
