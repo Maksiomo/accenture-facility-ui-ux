@@ -80,7 +80,7 @@ export class DataProviderService {
               const ws = wb.getWorksheet(i);
               ws.eachRow({ includeEmpty: false }, function (row, rowIndex) {
                 const buffer: any = [];
-                for (let i = 3; i <= row.actualCellCount; i++) {
+                for (let i = 3; i <= row.actualCellCount + 1; i++) {
                   buffer.push(row.getCell(i).value);
                 }
                 const obj: TableTwoObj = {
@@ -198,6 +198,73 @@ export class DataProviderService {
       return stockProblems;
     } else {
       return "Склады функционируют в пределах нормы";
+    }
+  }
+
+  async analyzeObjectLoad(): Promise<IProblem[] | string> {
+    const loadProblems: IProblem[] = [];
+    const tableData = (await this.getTableData("Загрузка")) as TableTwoObj[];
+    let sortedByObjectData: any = [];
+    for (const object of tableData) {
+      if (object.day == 14) {
+        let avrgLoad: any = [];
+        let avrgUnavaliablity: any = [];
+        const resources: string[] = [];
+        for (const obj of sortedByObjectData[object.objectId]) {
+          resources.push(obj.resourceId);
+        }
+        for (let i = 0; i < 14; i++) {
+          for (const resource of resources) {
+            avrgLoad[resource] +=
+              sortedByObjectData[object.objectId][i][
+                resource
+              ].occupiedPercentageOfObject;
+            avrgUnavaliablity[resource] +=
+              sortedByObjectData[object.objectId][i][
+                resource
+              ].unavaliablePercentageOfResource;
+          }
+        }
+        for (const resource of resources) {
+          avrgLoad[resource] /= 14;
+          avrgUnavaliablity[resource] /= 14;
+
+          if (avrgLoad[resource] < 0.85) {
+            loadProblems.push({
+              elementId: object.objectId,
+              elementName: object.objectName,
+              legend:
+                "Недостаточная средняя загрузка при обработке ресурса: " +
+                resource,
+              dangerTier: 0.85 - avrgLoad,
+              employeeId: object.employeeId,
+              status: object.status,
+            });
+          }
+          if (avrgUnavaliablity[resource] > 0.15) {
+            loadProblems.push({
+              elementId: object.objectId,
+              elementName: object.objectName,
+              legend: "Слишком малый объём ресурса: " + resource,
+              dangerTier: 0.85 - avrgLoad,
+              employeeId: object.employeeId,
+              status: object.status,
+            });
+          }
+          continue;
+        }
+      }
+      if (object.day > 15) {
+        sortedByObjectData = [];
+        continue;
+      }
+      console.log(object);
+      sortedByObjectData.push();
+    }
+    if (loadProblems.length > 0) {
+      return loadProblems;
+    } else {
+      return "Нагрузка на агрегаты распределена эффективно";
     }
   }
 }

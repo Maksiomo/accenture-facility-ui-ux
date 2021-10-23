@@ -20,5 +20,12 @@ export class DataProviderController {
         return this.dataProvider.analyzeResourceStock();
       })
     );
+
+    this.router.get(
+      "/analyzeLoad",
+      handler((req) => {
+        return this.dataProvider.analyzeObjectLoad();
+      })
+    );
   }
 }
