@@ -59,7 +59,6 @@ function App() {
       (res) => {
         setInfos(
           res.data
-            .filter((item) => item.averageDangerTier > 1)
             .sort(function (a, b) {
               return b.averageDangerTier - a.averageDangerTier;
             })
@@ -203,6 +202,8 @@ function App() {
   }
 
   function pickLocalItemThree(id) {
+    setOptions(options.map(option => {option.picked = false}))
+    setInfos([])
     setLocalItemsThree(
       localItemsThree.map((item) => {
         item.picked = item.id === id;
@@ -267,7 +268,7 @@ function App() {
       <div className="wrapper">
         <div className="map">
           {panel && graph ? <BarGraphics data={graphs} /> : null}
-          {problem && three && allInfo ? (
+          {problem && allInfo && infos.length > 0 ? (
             <div className="inner-map">
               <AllInfo item={allInfo} />
             </div>

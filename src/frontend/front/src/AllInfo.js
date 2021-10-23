@@ -5,6 +5,8 @@ function AllInfo({item}) {
         <div className='all-info'>
             <strong>{item.problems[0].problem.elementName}</strong>
             <br/>
+            {item.averageDangerTier}
+            <br/>
             {item.problems.sort(function(a, b){return Date.parse(b.date) - Date.parse(a.date)}).map(e => {
                 return (
                     <div style={{backgroundColor: 'rgb(255,' + (255 - (e.problem.dangerTier*255*0.05)) + ','+ (255 - (e.problem.dangerTier*255*0.05)) + ')',
