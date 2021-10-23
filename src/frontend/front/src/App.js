@@ -11,6 +11,8 @@ import VerticalMenu from "./VerticalMenu/VerticalMenu";
 import LocalMenuTwo from "./LocalMenuTwo/LocalMenuTwo";
 import LocalMenuThree from "./LocalMenuThree/LocalMenuThree";
 import SearchInfo from "./SearchInfo";
+import AllInfoLoad from "./AllInfoLoad";
+import InfoMenuLoad from "./InfoMenuLoad/InfoMenuLoad";
 
 function App() {
   const [items, setItems] = React.useState([
@@ -41,6 +43,7 @@ function App() {
     { name: "Fourth group", id: 3, я: 333, календарь: 920, переверну: 211 },
   ]);
   const [infos, setInfos] = React.useState([]);
+  const [infosLoad, setInfosLoad] = React.useState([]);
 
   const [loading, setLoading] = React.useState(false);
   const [panel, setPanel] = React.useState(true);
@@ -49,28 +52,17 @@ function App() {
   const [two, setTwo] = React.useState(true);
   const [three, setThree] = React.useState(true);
   const [allInfo, setAllInfo] = React.useState();
+  const [allInfoLoad, setAllInfoLoad] = React.useState();
 
   useEffect(() => {
     getDangerInfo();
+    getAllLoad();
   }, []);
-
-  function getDangerLoad() {
-    sendRequest("http://127.0.0.1:5555/dataProvider/analyzeLoad").then(
-      (res) => {
-        setInfos(
-          res.data
-            .sort(function (a, b) {
-              return b.averageDangerTier - a.averageDangerTier;
-            })
-        );
-      }
-    );
-  }
 
   function getAllLoad() {
     sendRequest("http://127.0.0.1:5555/dataProvider/analyzeLoad").then(
       (res) => {
-        setInfos(
+        setInfosLoad(
           res.data.sort(function (a, b) {
             return b.averageDangerTier - a.averageDangerTier;
           })
@@ -162,20 +154,10 @@ function App() {
       options.map((option) => {
         option.picked = option.id === id;
         if (id === 0) {
-          if(three){
-            getDangerInfo();
-          }
-          else{
-            getDangerLoad();
-          }
+          getDangerInfo();
         }
         if (id === 1) {
-          if(three){
-            getAllInfo();
-          }
-          else{
-            getAllLoad();
-          }
+          getAllInfo();
         }
         return option;
       })
@@ -183,6 +165,10 @@ function App() {
   }
 
   function pickInfo(info) {
+    setAllInfo(info);
+  }
+
+  function pickInfoLoad(info) {
     setAllInfo(info);
   }
 
@@ -202,7 +188,7 @@ function App() {
   }
 
   function pickLocalItemThree(id) {
-    setOptions(options.map(option => {option.picked = false}))
+    setOptions(options.map(option => {option.picked = false; return option}))
     setInfos([])
     setLocalItemsThree(
       localItemsThree.map((item) => {
@@ -258,6 +244,7 @@ function App() {
         pickLocalItemTwo,
         pickLocalItemThree,
         updateInfo,
+        pickInfoLoad,
       }}
     >
       <div>
@@ -270,17 +257,17 @@ function App() {
           {panel && graph ? <BarGraphics data={graphs} /> : null}
           {problem && allInfo && infos.length > 0 ? (
             <div className="inner-map">
-              <AllInfo item={allInfo} />
+              {three ? <AllInfo item={allInfo} /> : <AllInfoLoad item={allInfoLoad}/>}
             </div>
           ) : null}
         </div>
         {problem ? (
           <div className="side-menu">
             <div className="legent">
-              <InfoMenu infos={infos} />
+              {three ? <InfoMenu infos={infos} /> : <InfoMenuLoad infos={infosLoad}/>}
             </div>
             <div className="vertical-menu-div">
-              <VerticalMenu options={options} />
+              {three ? <VerticalMenu options={options} /> : null}
             </div>
           </div>
         ) : null}
