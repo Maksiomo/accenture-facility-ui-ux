@@ -188,8 +188,6 @@ function App() {
   }
 
   function pickLocalItemThree(id) {
-    setOptions(options.map(option => {option.picked = false; return option}))
-    setInfos([])
     setLocalItemsThree(
       localItemsThree.map((item) => {
         item.picked = item.id === id;
@@ -267,7 +265,7 @@ function App() {
               {three ? <InfoMenu infos={infos} /> : <InfoMenuLoad infos={infosLoad}/>}
             </div>
             <div className="vertical-menu-div">
-              {three ? <VerticalMenu options={options} /> : null}
+              {three ? <VerticalMenu options={options} /> : <div className='dark-block'></div>}
             </div>
           </div>
         ) : null}

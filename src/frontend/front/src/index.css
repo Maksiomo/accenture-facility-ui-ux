@@ -137,6 +137,14 @@ code {
   background-color: #777;
 }
 
+.dark-block {
+  width: 100%;
+  height: 2rem;
+  margin: 0;
+  padding: 0;
+  background-color: #333;
+}
+
 .info-menu {
   display: flex;
   flex-direction: column;

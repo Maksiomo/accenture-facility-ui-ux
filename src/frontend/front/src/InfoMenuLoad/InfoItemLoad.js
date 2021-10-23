@@ -1,4 +1,5 @@
 import React, {useContext} from 'react';
+import Context from '../Context';
 
 function InfoItemLoad({info}){
     let color;
@@ -11,7 +12,7 @@ function InfoItemLoad({info}){
         color = 'rgb(255,' + (255 - (info.averageDangerTier*255)) + ','+ (255 - (info.averageDangerTier*255)) + ')';
     }
     return (
-        <li className='info-item' style={{backgroundColor: color}} onClick={pickInfo.bind(null, info)}>
+        <li className='info-item' style={{backgroundColor: color}} onClick={pickInfoLoad.bind(null, info)}>
             <span>
                 <strong>{info.problems[0].problem.elementName}</strong>
             </span>
