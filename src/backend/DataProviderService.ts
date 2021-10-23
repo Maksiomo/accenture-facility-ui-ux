@@ -5,6 +5,7 @@ import { TableTwoObj } from "./types/tableTwoObj";
 import { TableThreeResourceUsage } from "./types/tableThreeResourceUsage";
 import { TableThreeResourceLeftovers } from "./types/tableThreeResourceLeftovers";
 import { IProblem } from "./types/IProblem";
+import e from "express";
 
 export class DataProviderService {
   private tables: ITable[] = [
@@ -204,64 +205,71 @@ export class DataProviderService {
   async analyzeObjectLoad(): Promise<IProblem[] | string> {
     const loadProblems: IProblem[] = [];
     const tableData = (await this.getTableData("Загрузка")) as TableTwoObj[];
-    let sortedByObjectData: any = [];
+    var avrgLoad: number[][] = [];
+    var avrgUnavaliablity: number[][] = [];
+    var resources: string[][] = [];
+    let lastObj: string = "";
+    let lastRes: string = "";
+    let lastDay: number = 0;
+    let i = -1;
+    let a = -1;
     for (const object of tableData) {
       if (object.day == 14) {
-        let avrgLoad: any = [];
-        let avrgUnavaliablity: any = [];
-        const resources: string[] = [];
-        for (const obj of sortedByObjectData[object.objectId]) {
-          resources.push(obj.resourceId);
-        }
-        for (let i = 0; i < 14; i++) {
-          for (const resource of resources) {
-            avrgLoad[resource] +=
-              sortedByObjectData[object.objectId][i][
-                resource
-              ].occupiedPercentageOfObject;
-            avrgUnavaliablity[resource] +=
-              sortedByObjectData[object.objectId][i][
-                resource
-              ].unavaliablePercentageOfResource;
-          }
-        }
-        for (const resource of resources) {
-          avrgLoad[resource] /= 14;
-          avrgUnavaliablity[resource] /= 14;
-
-          if (avrgLoad[resource] < 0.85) {
+        for (let x = 0; x < avrgLoad[a].length; x++) {
+          avrgLoad[a][x] /= 14;
+          avrgUnavaliablity[a][x] /= 14;
+          if (avrgLoad[a][x] < 0.85) {
             loadProblems.push({
               elementId: object.objectId,
               elementName: object.objectName,
               legend:
-                "Недостаточная средняя загрузка при обработке ресурса: " +
-                resource,
-              dangerTier: 0.85 - avrgLoad,
+                "У агрегата недостаточная загруженность при работе с ресурсом: " +
+                resources[a][i],
+              dangerTier: 0.85 - avrgLoad[a][x],
               employeeId: object.employeeId,
               status: object.status,
             });
           }
-          if (avrgUnavaliablity[resource] > 0.15) {
+          if (avrgUnavaliablity[a][x] > 0.15) {
             loadProblems.push({
               elementId: object.objectId,
               elementName: object.objectName,
-              legend: "Слишком малый объём ресурса: " + resource,
-              dangerTier: 0.85 - avrgLoad,
+              legend: "Агрегату не хватает ресурса: " + resources[a][i],
+              dangerTier: avrgLoad[a][x] - 0.15,
               employeeId: object.employeeId,
               status: object.status,
             });
           }
-          continue;
         }
-      }
-      if (object.day > 15) {
-        sortedByObjectData = [];
         continue;
       }
-      console.log(object);
-      sortedByObjectData.push();
+      if (object.day > 14) {
+        continue;
+      } else {
+        if (object.objectId != lastObj) {
+          a++;
+          avrgLoad.push([]);
+          avrgUnavaliablity.push([]);
+          resources.push([]);
+          i = -1;
+        }
+        if (object.day! - lastDay) {
+          i = -1;
+        }
+        if (object.resourceId != lastRes) {
+          i++;
+        }
+        avrgLoad[a].push(object.occupiedPercentageOfObject);
+        avrgUnavaliablity[a].push(object.unavaliablePercentageOfResource);
+        resources[a].push(object.resourceId);
+        lastRes = object.resourceId;
+        lastObj = object.objectId;
+        lastDay = object.day;
+      }
     }
     if (loadProblems.length > 0) {
+      console.log(tableData.length);
+      console.log(loadProblems.length);
       return loadProblems;
     } else {
       return "Нагрузка на агрегаты распределена эффективно";
