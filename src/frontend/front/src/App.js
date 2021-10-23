@@ -15,6 +15,10 @@ function App() {
     { title: "Визуализация плана", id: 1, picked: false },
     { title: "Проблемы", id: 2, picked: false },
   ]);
+  const [localItemsTwo, setLocalItemsTwo] = React.useState([
+    { title: "Проблемы загрузки", id: 0, picked: false },
+    { title: "Проблемы складов", id: 1, picked: false },
+  ]);
   const [options, setOptions] = React.useState([
     { title: "Показать более опасные", id: 0, picked: true },
     { title: "Показать все", id: 1, picked: false },
@@ -45,8 +49,8 @@ function App() {
     sendRequest("http://127.0.0.1:5555/dataProvider/analyzeStock").then(res =>{
       setInfos(res
         .data
-        .filter(item => item.problems[0].problem.dangerTier > 1)
-        .sort(function(a, b){return b.problems[0].problem.dangerTier - a.problems[0].problem.dangerTier})
+        .filter(item => item.averageDangerTier > 1)
+        .sort(function(a, b){return b.averageDangerTier - a.averageDangerTier})
         )
     });
   }
@@ -56,7 +60,7 @@ function App() {
     sendRequest("http://127.0.0.1:5555/dataProvider/analyzeStock").then(res =>{
       setInfos(res
         .data
-        .sort(function(a, b){return b.problems[0].problem.dangerTier - a.problems[0].problem.dangerTier})
+        .sort(function(a, b){return b.averageDangerTier - a.averageDangerTier})
         )
     });
   }
@@ -132,6 +136,15 @@ function App() {
     setAllInfo(info);
   }
 
+  function pickLocalItemTwo(id) {
+    setLocalItemsTwo(
+      localItemsTwo.map(item =>{
+        item.picked = item.id === id;
+        return item;
+      })
+    )
+  }
+
   function pickPlanOption(id) {
     setPlanOptions(
       planOptions.map((option) => {
@@ -162,9 +175,10 @@ function pickGraph(id){
 }
 
   return (
-    <Context.Provider value={{ pickItem, pickOption, pickPlanOption, pickInfo, pickGraph }}>
+    <Context.Provider value={{ pickItem, pickOption, pickPlanOption, pickInfo, pickGraph, pickLocalItemTwo }}>
       <div>
         <HorizontalMenu items={items} />
+        {plan ? <LocalMenuTwo/> : null} 
       </div>
       <div className="wrapper">
         <div className="map">

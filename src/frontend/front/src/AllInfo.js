@@ -2,14 +2,13 @@ import React from 'react';
 
 function AllInfo({item}) {
     return (
-        <p>
+        <div className='all-info'>
             <strong>{item.problems[0].problem.elementName}</strong>
             <br/>
-            <br/>
             {item.problems.sort(function(a, b){return Date.parse(b.date) - Date.parse(a.date)}).map(e => {
-                return (<div>
-                    <div style={{backgroundColor: 'rgb(255,' + (255 - (e.problem.dangerTier*255*0.01)) + ','+ (255 - (e.problem.dangerTier*255*0.01)) + ')',
-                    borderRadius: '5%', border: '1px solid #777'}}>
+                return (
+                    <div style={{backgroundColor: 'rgb(255,' + (255 - (e.problem.dangerTier*255*0.05)) + ','+ (255 - (e.problem.dangerTier*255*0.05)) + ')',
+                    borderRadius: '5%', border: '1px solid #777', width: 'auto', height: 'auto', margin: '5px'}}>
                         {e.problem.legend}
                         <br/>
                         {e.date}
@@ -20,12 +19,9 @@ function AllInfo({item}) {
                         <br/>
                         {'Опасность: '+ e.problem.dangerTier}
                         <br/>
-                    </div>
-                    <br/>
                 </div>)
                 })}
-            <br/>
-        </p>
+        </div>
         
     )
 }
