@@ -31,9 +31,10 @@ code {
   display: flex;
   justify-content: left;
   align-items: left;
+  overflow:auto;
   height: 100%;
   width: 100%;
-  font-size: x-large;
+  margin-left: 15%;
 }
 
 .side-menu {
