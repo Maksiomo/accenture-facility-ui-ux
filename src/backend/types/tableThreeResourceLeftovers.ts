@@ -5,4 +5,6 @@ export interface TableThreeResourceLeftovers {
   plannedStockAmount: number;
   stockedMoreThanPlanned: boolean;
   actualStockAmount: number;
+  employeeId: string;
+  status: string;
 }

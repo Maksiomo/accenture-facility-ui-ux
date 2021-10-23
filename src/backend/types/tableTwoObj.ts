@@ -9,4 +9,6 @@ export interface TableTwoObj {
   durationDays: number;
   occupiedPercentageOfObject: number;
   unavaliablePercentageOfResource: number;
+  employeeId: string;
+  status: string;
 }

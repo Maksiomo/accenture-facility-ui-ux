@@ -4,6 +4,7 @@ import { TableOneObj } from "./types/tableOneObj";
 import { TableTwoObj } from "./types/tableTwoObj";
 import { TableThreeResourceUsage } from "./types/tableThreeResourceUsage";
 import { TableThreeResourceLeftovers } from "./types/tableThreeResourceLeftovers";
+import { IProblem } from "./types/IProblem";
 
 export class DataProviderService {
   private tables: ITable[] = [
@@ -93,6 +94,8 @@ export class DataProviderService {
                   durationDays: Number(buffer[7]),
                   occupiedPercentageOfObject: Number(buffer[8]),
                   unavaliablePercentageOfResource: Number(buffer[9]),
+                  employeeId: buffer[10],
+                  status: buffer[11],
                 };
                 res.push(obj);
               });
@@ -148,6 +151,8 @@ export class DataProviderService {
                   Number(buffer[4]) > Number(buffer[6])
                 ),
                 actualStockAmount: Number(buffer[6]),
+                employeeId: buffer[7],
+                status: buffer[8],
               };
               res.push(obj);
             });
@@ -158,5 +163,37 @@ export class DataProviderService {
       }
     }
     throw new Error("Invalid table");
+  }
+
+  async analyzeResourceStock(): Promise<IProblem[] | string> {
+    const stockProblems: IProblem[] = [];
+    const tableData = (await this.getTableData(
+      "Запасы"
+    )) as TableThreeResourceLeftovers[];
+    for (const warehouse of tableData) {
+      const ratio = warehouse.actualStockAmount / warehouse.plannedStockAmount;
+      if (ratio > 1) {
+        const problem: IProblem = {
+          legend: "Превышен лимит заготовки",
+          dangerTier: ratio - 1,
+          employeeId: warehouse.employeeId,
+          status: warehouse.status,
+        };
+        stockProblems.push(problem);
+      } else if (ratio < 0.85) {
+        const problem: IProblem = {
+          legend: "Лимит заготовки не достигнут",
+          dangerTier: 1 - ratio,
+          employeeId: warehouse.employeeId,
+          status: warehouse.status,
+        };
+        stockProblems.push(problem);
+      }
+    }
+    if (stockProblems.length > 0) {
+      return stockProblems;
+    } else {
+      return "Склады функционируют в пределах нормы";
+    }
   }
 }
