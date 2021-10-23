@@ -36,11 +36,15 @@ function BarGraphics({ data }) {
         margin={{ top: 5, right: 5, left: 5, bottom: 5 }}>
         <Line type="monotone" dataKey={data.key1} />
         <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
+         <XAxis dataKey="name" tick={data.tick} /> 
+          <YAxis />
         <Tooltip />
       </LineChart>
     </div>
   );
 }
+//XAxis dataKey="name" вместо name названия поля с датами
+
 /*<Legend />
  <ReferenceLine y={0} stroke="#000" />
         <Bar dataKey="я" fill="#8884d8" />
