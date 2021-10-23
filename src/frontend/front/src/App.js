@@ -169,7 +169,7 @@ function App() {
   }
 
   function pickInfoLoad(info) {
-    setAllInfo(info);
+    setAllInfoLoad(info);
   }
 
   function pickLocalItemTwo(id) {
