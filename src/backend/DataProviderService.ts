@@ -6,7 +6,7 @@ import { TableThreeResourceUsage } from "./types/tableThreeResourceUsage";
 import { TableThreeResourceLeftovers } from "./types/tableThreeResourceLeftovers";
 import { IProblem } from "./types/IProblem";
 import { Config } from "./util/Config";
-import { StockProblem } from "./types/StockProblem";
+import { FullProblem } from "./types/fullProblem";
 
 export class DataProviderService {
   config: Config = new Config();
@@ -169,8 +169,8 @@ export class DataProviderService {
     throw new Error("Invalid table");
   }
 
-  async analyzeResourceStock(): Promise<StockProblem[] | string> {
-    const stockProblems: StockProblem[] = [];
+  async analyzeResourceStock(): Promise<FullProblem[] | string> {
+    const stockProblems: FullProblem[] = [];
     const tableData = (await this.getTableData(
       "Запасы"
     )) as TableThreeResourceLeftovers[];
@@ -257,12 +257,13 @@ export class DataProviderService {
     }
   }
 
-  async analyzeObjectLoad(): Promise<IProblem[] | string> {
-    const loadProblems: IProblem[] = [];
+  async analyzeObjectLoad(): Promise<FullProblem[] | string> {
+    const loadProblems: FullProblem[] = [];
     const tableData = (await this.getTableData("Загрузка")) as TableTwoObj[];
     var avrgLoad: number[][] = [];
     var avrgUnavaliablity: number[][] = [];
     var resources: string[][] = [];
+    var date: string[][] = [];
     let lastObj: string = "";
     let lastRes: string = "";
     let lastDay: number = 0;
@@ -271,29 +272,72 @@ export class DataProviderService {
     for (const object of tableData) {
       if (object.day == this.config.analyzePeriod) {
         for (let x = 0; x < avrgLoad[a].length; x++) {
-          avrgLoad[a][x] /= this.config.analyzePeriod;
-          avrgUnavaliablity[a][x] /= this.config.analyzePeriod;
           if (avrgLoad[a][x] < this.config.minLoad) {
-            loadProblems.push({
+            const problem: IProblem = {
               elementId: object.objectId,
               elementName: object.objectName,
               legend:
                 "У агрегата недостаточная загруженность при работе с ресурсом: " +
-                resources[a][i],
+                resources[a][x],
               dangerTier: this.config.minLoad - avrgLoad[a][x],
               employeeId: object.employeeId,
               status: object.status,
-            });
+            };
+            let flag: boolean = false;
+            for (const load of loadProblems) {
+              if (load.objectId == problem.elementId) {
+                load.problems.push({
+                  problem: problem,
+                  date: date[a][x],
+                });
+                flag = true;
+                break;
+              }
+            }
+            if (!flag) {
+              loadProblems.push({
+                objectId: problem.elementId,
+                averageDangerTier: 0,
+                problems: [
+                  {
+                    problem: problem,
+                    date: date[a][x],
+                  },
+                ],
+              });
+            }
           }
           if (avrgUnavaliablity[a][x] > this.config.maxUnavaliable) {
-            loadProblems.push({
+            const problem: IProblem = {
               elementId: object.objectId,
               elementName: object.objectName,
-              legend: "Агрегату не хватает ресурса: " + resources[a][i],
-              dangerTier: avrgLoad[a][x] - this.config.maxUnavaliable,
+              legend: "Агрегату не хватает ресурса: " + resources[a][x],
+              dangerTier: avrgUnavaliablity[a][x] - this.config.maxUnavaliable,
               employeeId: object.employeeId,
               status: object.status,
-            });
+            };
+            let flag: boolean = false;
+            for (const load of loadProblems) {
+              if (load.objectId == problem.elementId) {
+                load.problems.push({
+                  problem: problem,
+                  date: date[a][x],
+                });
+                flag = true;
+              }
+            }
+            if (!flag) {
+              loadProblems.push({
+                objectId: problem.elementId,
+                averageDangerTier: 0,
+                problems: [
+                  {
+                    problem: problem,
+                    date: date[a][x],
+                  },
+                ],
+              });
+            }
           }
         }
         continue;
@@ -306,6 +350,7 @@ export class DataProviderService {
           avrgLoad.push([]);
           avrgUnavaliablity.push([]);
           resources.push([]);
+          date.push([]);
           i = -1;
         }
         if (object.day! - lastDay) {
@@ -314,15 +359,24 @@ export class DataProviderService {
         if (object.resourceId != lastRes) {
           i++;
         }
-        avrgLoad[a].push(object.occupiedPercentageOfObject);
-        avrgUnavaliablity[a].push(object.unavaliablePercentageOfResource);
+        avrgLoad[a].push(object.occupiedPercentageOfObject / 100);
+        avrgUnavaliablity[a].push(object.unavaliablePercentageOfResource / 100);
         resources[a].push(object.resourceId);
+        date[a].push(String(object.startDate));
         lastRes = object.resourceId;
         lastObj = object.objectId;
         lastDay = object.day;
       }
     }
     if (loadProblems.length > 0) {
+      for (const load of loadProblems) {
+        let avrgDangerTier = 0;
+        for (const problem of load.problems) {
+          avrgDangerTier += problem.problem.dangerTier;
+        }
+        avrgDangerTier /= load.problems.length;
+        load.averageDangerTier = avrgDangerTier;
+      }
       return loadProblems;
     } else {
       return "Нагрузка на агрегаты распределена эффективно";

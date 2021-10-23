@@ -3,7 +3,7 @@ export class Config {
   public stockRatioMax: number = 1;
   public stockRatioMin: number = 0.85;
   public minLoad: number = 0.85;
-  public maxUnavaliable: number = 0.15;
+  public maxUnavaliable: number = 0.2;
 
   public setAnalyzePeriod(num: number) {
     this.analyzePeriod = num;

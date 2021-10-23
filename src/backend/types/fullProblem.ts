@@ -1,6 +1,6 @@
 import { IProblem } from "./IProblem";
 
-export interface StockProblem {
+export interface FullProblem {
   objectId: string;
   averageDangerTier: number;
   problems: {
