@@ -5,22 +5,20 @@ function InfoItem({info}){
     let color;
     const { pickInfo } = useContext(Context);
 
-    if(info.dangerTier > 1){
+    if(info.problems[0].problem.dangerTier > 1){
         color = 'rgb(200, 0, 0)';
     }
     else{
-        color = 'rgb(255,' + (255 - (info.dangerTier*255)) + ','+ (255 - (info.dangerTier*255)) + ')';
+        color = 'rgb(255,' + (255 - (info.problems[0].problem.dangerTier*255)) + ','+ (255 - (info.problems[0].problem.dangerTier*255)) + ')';
     }
     return (
         <li className='info-item' style={{backgroundColor: color}} onClick={pickInfo.bind(null, info)}>
             <span>
-                {info.elementName}
-                &nbsp;
-                <strong>{info.legent}</strong>
+                <strong>{info.problems[0].problem.elementName}</strong>
             </span>
-            {info.elementID ? '☑' : '☒'}
         </li>
     )
 }
 
+//{info.problems.map(e => e.problem.legend)}
 export default InfoItem
