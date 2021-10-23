@@ -5,12 +5,10 @@ import BarGraphics from "./BarGraphics";
 import Context from "./Context";
 import HorizontalMenu from "./HorizontalMenu/HorizontalMenu";
 import InfoMenu from "./InfoMenu/InfoMenu";
-import Loader from "./Loader";
 import PlanOptionMenu from "./OptionsMenu/PlanOptionsMenu";
 import VerticalMenu from "./VerticalMenu/VerticalMenu";
 import LocalMenuTwo from "./LocalMenuTwo/LocalMenuTwo";
 import LocalMenuThree from "./LocalMenuThree/LocalMenuThree";
-import SearchInfo from "./SearchInfo";
 import AllInfoLoad from "./AllInfoLoad";
 import InfoMenuLoad from "./InfoMenuLoad/InfoMenuLoad";
 
@@ -97,6 +95,30 @@ function App() {
     );
   }
 
+  function getKPEInfo() {
+    sendRequest("http://127.0.0.1:5555/dataProvider/КПЭ/analyzeStock").then(
+      (res) => {
+        let result = [];
+        let flag = false;
+        for (const data of res.data) {
+          for (const final of result) {
+            if (data.administrativeMetric === final.parentMetric) {
+              final.paramMetrics.push(data);
+              flag = true;
+            }
+          }
+          if (!flag) {
+            result.push({
+              parentMetric: data.administrativeMetric,
+              paramMetrics: [data],
+            });
+          }
+        }
+        return result;
+      }
+    );
+  }
+
   async function sendRequest(url) {
     return await axios.get(url);
   }
@@ -176,10 +198,10 @@ function App() {
     setLocalItemsTwo(
       localItemsTwo.map((item) => {
         item.picked = item.id === id;
-        if(id === 0){
+        if (id === 0) {
           setTwo(false);
         }
-        if(id === 1){
+        if (id === 1) {
           setTwo(true);
         }
         return item;
@@ -191,10 +213,10 @@ function App() {
     setLocalItemsThree(
       localItemsThree.map((item) => {
         item.picked = item.id === id;
-        if(id === 0){
+        if (id === 0) {
           setThree(false);
         }
-        if(id === 1){
+        if (id === 1) {
           setThree(true);
         }
         return item;
@@ -212,7 +234,7 @@ function App() {
   }
 
   function updateInfo(id) {
-    setInfos(infos)
+    setInfos(infos);
   }
 
   const [graph, setGraph] = React.useState(true);
@@ -252,21 +274,31 @@ function App() {
       </div>
       <div className="wrapper">
         <div className="map">
-          {panel && graph ? <BarGraphics data={graphs} /> : null}
+          {panel && graph ? <BarGraphics data={this.getKPEInfo} /> : null}
           {problem ? (
             <div className="inner-map">
               {three && allInfo ? <AllInfo item={allInfo} /> : null}
-              {!three && allInfoLoad ? <AllInfoLoad item={allInfoLoad}/> : null}
+              {!three && allInfoLoad ? (
+                <AllInfoLoad item={allInfoLoad} />
+              ) : null}
             </div>
           ) : null}
         </div>
         {problem ? (
           <div className="side-menu">
             <div className="legent">
-              {three ? <InfoMenu infos={infos} /> : <InfoMenuLoad infos={infosLoad}/>}
+              {three ? (
+                <InfoMenu infos={infos} />
+              ) : (
+                <InfoMenuLoad infos={infosLoad} />
+              )}
             </div>
             <div className="vertical-menu-div">
-              {three ? <VerticalMenu options={options} /> : <div className='dark-block'></div>}
+              {three ? (
+                <VerticalMenu options={options} />
+              ) : (
+                <div className="dark-block"></div>
+              )}
             </div>
           </div>
         ) : null}
