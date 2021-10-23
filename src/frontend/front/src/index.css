@@ -23,7 +23,8 @@ code {
   justify-content: center;
   align-items: center;
   height: 100%;
-  width: 60%;
+  width: 100%;
+  max-width: 100%;
 }
 
 .side-menu {
@@ -110,13 +111,14 @@ code {
 
 .info-item {
   color: black;
-  background-color: lightgreen;
+  background-color: rgb(255, 255, 255);
+  border: 1px solid rgb(0, 0, 0);
   padding: 14px;
   text-decoration: none;
 }
 
 .info-item:hover {
-  background-color: lightcyan;
+  border: 1px solid black;
 }
 
 .lds-dual-ring {
@@ -144,20 +146,4 @@ code {
   100% {
     transform: rotate(360deg);
   }
-}
-
-.warning {
-  background-color: lightsalmon;
-}
-
-.warning:hover {
-  background-color: salmon;
-}
-
-.danger {
-  background-color: crimson;
-}
-
-.danger:hover {
-  background-color: darkred;
 }

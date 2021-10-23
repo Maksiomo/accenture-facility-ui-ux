@@ -1,22 +1,12 @@
 import React from 'react';
 
 function InfoItem({info}){
-    const classes = ['info-item'];
-
-    if(info.dangerTear === 'warning'){
-        classes.push('warning');
-        classes.push('warning:hover');
-    }
-
-    if(info.dangerTear === 'danger'){
-        classes.push('danger');
-        classes.push('danger:hover');
-    }
-    
+    const color = 'rgb(255,' + (255 - (info.dangerTear/100*255)) + ','+ (255 - (info.dangerTear/100*255)) + ')';
+    const borderColor = '1px solid rgb(77,' + (255 - (info.dangerTear/100*255))*0.3 + ','+ (255 - (info.dangerTear/100*255))*0.3 + ')';
     return (
-        <li className={classes.join(' ')}>
+        <li className='info-item' style={{backgroundColor: color, border: borderColor}}>
             <span>
-                {info.disk}
+                {info.description}
                 &nbsp;
                 <strong>{info.data}</strong>
             </span>
