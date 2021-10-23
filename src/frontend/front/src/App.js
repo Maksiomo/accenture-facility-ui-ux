@@ -101,16 +101,31 @@ function App() {
         let result = [];
         let flag = false;
         for (const data of res.data) {
+          const dateArr = [
+            data.date1value,
+            data.date2value,
+            data.date3value,
+            data.date4value,
+            data.date5value,
+          ];
           for (const final of result) {
             if (data.administrativeMetric === final.parentMetric) {
-              final.paramMetrics.push(data);
+              final.paramMetrics.push({
+                metricName: data.metricParam,
+                data: dateArr,
+              });
               flag = true;
             }
           }
           if (!flag) {
             result.push({
               parentMetric: data.administrativeMetric,
-              paramMetrics: [data],
+              paramMetrics: [
+                {
+                  metricName: data.metricParam,
+                  data: dateArr,
+                },
+              ],
             });
           }
         }
@@ -274,7 +289,7 @@ function App() {
       </div>
       <div className="wrapper">
         <div className="map">
-          {panel && graph ? <BarGraphics data={this.getKPEInfo} /> : null}
+          {panel && graph ? <BarGraphics data={getKPEInfo()} /> : null}
           {problem ? (
             <div className="inner-map">
               {three && allInfo ? <AllInfo item={allInfo} /> : null}
