@@ -253,7 +253,7 @@ function App() {
       <div className="wrapper">
         <div className="map">
           {panel && graph ? <BarGraphics data={graphs} /> : null}
-          {problem && allInfo && infos.length > 0 ? (
+          {problem ? (
             <div className="inner-map">
               {three ? <AllInfo item={allInfo} /> : <AllInfoLoad item={allInfoLoad}/>}
             </div>
