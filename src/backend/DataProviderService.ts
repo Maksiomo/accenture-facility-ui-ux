@@ -5,9 +5,11 @@ import { TableTwoObj } from "./types/tableTwoObj";
 import { TableThreeResourceUsage } from "./types/tableThreeResourceUsage";
 import { TableThreeResourceLeftovers } from "./types/tableThreeResourceLeftovers";
 import { IProblem } from "./types/IProblem";
-import e from "express";
+import { Config } from "./util/Config";
 
 export class DataProviderService {
+  config: Config = new Config();
+
   private tables: ITable[] = [
     {
       tableName: "КПЭ",
@@ -173,22 +175,22 @@ export class DataProviderService {
     )) as TableThreeResourceLeftovers[];
     for (const warehouse of tableData) {
       const ratio = warehouse.actualStockAmount / warehouse.maxStockAmount;
-      if (ratio > 1) {
+      if (ratio > this.config.stockRatioMax) {
         const problem: IProblem = {
           elementId: warehouse.storageId,
           elementName: warehouse.storageName,
           legend: "Превышен лимит заготовки",
-          dangerTier: ratio - 1,
+          dangerTier: ratio - this.config.stockRatioMax,
           employeeId: warehouse.employeeId,
           status: warehouse.status,
         };
         stockProblems.push(problem);
-      } else if (ratio < 0.85) {
+      } else if (ratio < this.config.stockRatioMin) {
         const problem: IProblem = {
           elementId: warehouse.storageId,
           elementName: warehouse.storageName,
           legend: "Лимит заготовки не достигнут",
-          dangerTier: 0.85 - ratio,
+          dangerTier: this.config.stockRatioMin - ratio,
           employeeId: warehouse.employeeId,
           status: warehouse.status,
         };
@@ -214,28 +216,28 @@ export class DataProviderService {
     let i = -1;
     let a = -1;
     for (const object of tableData) {
-      if (object.day == 14) {
+      if (object.day == this.config.analyzePeriod) {
         for (let x = 0; x < avrgLoad[a].length; x++) {
-          avrgLoad[a][x] /= 14;
-          avrgUnavaliablity[a][x] /= 14;
-          if (avrgLoad[a][x] < 0.85) {
+          avrgLoad[a][x] /= this.config.analyzePeriod;
+          avrgUnavaliablity[a][x] /= this.config.analyzePeriod;
+          if (avrgLoad[a][x] < this.config.minLoad) {
             loadProblems.push({
               elementId: object.objectId,
               elementName: object.objectName,
               legend:
                 "У агрегата недостаточная загруженность при работе с ресурсом: " +
                 resources[a][i],
-              dangerTier: 0.85 - avrgLoad[a][x],
+              dangerTier: this.config.minLoad - avrgLoad[a][x],
               employeeId: object.employeeId,
               status: object.status,
             });
           }
-          if (avrgUnavaliablity[a][x] > 0.15) {
+          if (avrgUnavaliablity[a][x] > this.config.maxUnavaliable) {
             loadProblems.push({
               elementId: object.objectId,
               elementName: object.objectName,
               legend: "Агрегату не хватает ресурса: " + resources[a][i],
-              dangerTier: avrgLoad[a][x] - 0.15,
+              dangerTier: avrgLoad[a][x] - this.config.maxUnavaliable,
               employeeId: object.employeeId,
               status: object.status,
             });
@@ -243,7 +245,7 @@ export class DataProviderService {
         }
         continue;
       }
-      if (object.day > 14) {
+      if (object.day > this.config.analyzePeriod) {
         continue;
       } else {
         if (object.objectId != lastObj) {
@@ -268,8 +270,6 @@ export class DataProviderService {
       }
     }
     if (loadProblems.length > 0) {
-      console.log(tableData.length);
-      console.log(loadProblems.length);
       return loadProblems;
     } else {
       return "Нагрузка на агрегаты распределена эффективно";
