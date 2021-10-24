@@ -26,11 +26,11 @@ function BarGraphics({ data }) {
       >
         <Line
           type="monotone"
-          dataKey="paramMetrics.data"
+          dataKey="data.paramMetrics.data"
           stroke="#8884d8"
           dot={true}
         />
-        <XAxis dataKey="paramMetrics.date" />
+        <XAxis dataKey="data.paramMetrics.date" />
         <YAxis />
       </LineChart>
     </li>

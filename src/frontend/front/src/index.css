@@ -98,6 +98,21 @@ code {
   border-radius: 5%;
 }
 
+.graphics {
+  width: 100%;
+  height: auto;
+  overflow: auto;
+  white-space: nowrap;
+  text-align: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+.gr {
+  display: inline-block;
+}
+
 .horizontal-item:hover {
   background-color: #777;
 }
