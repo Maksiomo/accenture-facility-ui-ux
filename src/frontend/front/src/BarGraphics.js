@@ -49,20 +49,22 @@ function BarGraphics({ data }) {
   }
 
   return (
-    <div className="map" onClick={pickGraph.bind(null, data.id)}>
-      <LineChart
-        width={width}
+    data.forEach((metric) => {
+      <div className='map' onClick={pickGraph.bind(null, data.id)}>
+        <LineChart
+        width= {width}
         height={height}
         data={data}
-        margin={{ top: 5, right: 5, left: 5, bottom: 5 }}
-      >
-        <Line type="monotone" dataKey={data.key1} />
+        margin={{ top: 5, right: 5, left: 5, bottom: 5 }}>
+        <Line type="monotone" dataKey={data.paramMetrics.map((elem) => elem.data)} />
         <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-        <XAxis dataKey="name" tick={data.tick} />
-        <YAxis />
+         <XAxis dataKey={data.paramMetrics.map((elem) => {return elem.metricName})} /> 
+          <YAxis />
         <Tooltip />
       </LineChart>
     </div>
+    })
+    
   );
   */
 }
