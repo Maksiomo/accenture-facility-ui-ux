@@ -320,21 +320,15 @@ function App() {
                 <div className="dark-block"></div>
               )}
             </div>
-            {three ? (
-                <div className="search">
-                <input type="text" placeholder="Поиск..." />
-              </div>
-              ) : (
-                <div className="dark-block"></div>
-              )}
-            {three ? (
-                <div>
-              </div>
-              ) : (
-                <div className="dark-block"></div>
-              )}
           </div>
         ) : null}
+        {three && problem ? (
+          <div className="search-bar">
+            <input type="text" placeholder="Поиск..." />
+          </div>
+          ) : (
+            <div className="dark-block"></div>
+        )}
         {plan ? (
           <div className="side-menu">
             <div className="vertical-menu-div">

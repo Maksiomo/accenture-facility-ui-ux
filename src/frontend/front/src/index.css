@@ -61,7 +61,7 @@ code {
   width: 100%;
 }
 
-.search input[type="text"] {
+.search-bar input[type="text"] {
   width: 250px;
   height: 30px;
   float: right;
@@ -70,6 +70,7 @@ code {
   margin-top: 8px;
   margin-right: 16px;
   font-size: small;
+  border: 1px solid #333;
 }
 
 .picked {
