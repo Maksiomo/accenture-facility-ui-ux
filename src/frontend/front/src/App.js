@@ -319,12 +319,14 @@ function App() {
               ) : (
                 <div className="dark-block"></div>
               )}
+              {three ? (
+                <div className="search">
+                <input type="text" placeholder="Поиск..." />
+              </div>
+              ) : (
+                <div className="dark-block"></div>
+              )}
             </div>
-          </div>
-        ) : null}
-        {three ? (
-          <div className="search">
-          <input type="text" placeholder="Поиск..." />
           </div>
         ) : null}
         {plan ? (
