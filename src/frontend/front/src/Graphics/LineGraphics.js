@@ -24,13 +24,8 @@ function BarGraphics({ data }) {
         data={data.paramMetrics}
         margin={{ top: 5, right: 5, left: 5, bottom: 5 }}
       >
-        <Line
-          type="monotone"
-          dataKey="data.paramMetrics.data"
-          stroke="#8884d8"
-          dot={true}
-        />
-        <XAxis dataKey="data.paramMetrics.date" />
+        <Line type="monotone" dataKey="data" stroke="#8884d8" dot={true} />
+        <XAxis dataKey="date" />
         <YAxis />
       </LineChart>
     </li>
