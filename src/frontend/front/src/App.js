@@ -280,7 +280,7 @@ function App() {
       </div>
       <div className="wrapper">
         <div className="map">
-          {panel && graphs ? <GraphicsMenu data={graphs} /> : null}
+          {panel && graphs ? <GraphicsMenu graphics={graphs} /> : null}
           {problem ? (
             <div className="inner-map">
               {three && allInfo ? <AllInfo item={allInfo} /> : null}
