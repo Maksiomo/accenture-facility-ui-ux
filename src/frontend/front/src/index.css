@@ -62,7 +62,7 @@ code {
 }
 
 .search input[type="text"] {
-  width: 100px;
+  width: 250px;
   height: 30px;
   float: right;
   padding: 6px;
