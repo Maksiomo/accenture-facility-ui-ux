@@ -321,19 +321,14 @@ function App() {
               )}
               
             </div>
-            {two ? (
-              <div className="search-bar">
-              <input type="text" placeholder="Поиск..." />
-              </div>
-              ) : (
-              <div className="dark-block"></div>
-            )}
             {three ? (
               <div className="search-bar">
               <input type="text" placeholder="Поиск..." />
               </div>
               ) : (
-              <div className="dark-block"></div>
+              <div className="search-bar">
+              <input type="text" placeholder="Поиск..." />
+              </div>
             )}
           </div>
         ) : null}
