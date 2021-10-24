@@ -320,15 +320,16 @@ function App() {
                 <div className="dark-block"></div>
               )}
             </div>
-          </div>
-        ) : null}
-        {three && problem ? (
+            {three ? (
           <div className="search-bar">
             <input type="text" placeholder="Поиск..." />
           </div>
           ) : (
             <div className="dark-block"></div>
         )}
+          </div>
+        ) : null}
+        
         {plan ? (
           <div className="side-menu">
             <div className="vertical-menu-div">
