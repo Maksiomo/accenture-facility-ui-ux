@@ -327,6 +327,12 @@ function App() {
               ) : (
                 <div className="dark-block"></div>
               )}
+            {three ? (
+                <div>
+              </div>
+              ) : (
+                <div className="dark-block"></div>
+              )}
           </div>
         ) : null}
         {plan ? (
