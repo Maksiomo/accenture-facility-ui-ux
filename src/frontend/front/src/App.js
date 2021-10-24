@@ -34,12 +34,7 @@ function App() {
     { title: "Смотреть выгрузку по...", id: 0, picked: false },
     { title: "Сверить по дате", id: 1, picked: false },
   ]);
-  const [graphs, setGraphs] = React.useState([
-    { name: "First group", id: 0, я: 400, календарь: 2400, переверну: 2400 },
-    { name: "Second group", id: 1, я: 350, календарь: 988, переверну: 400 },
-    { name: "Third group", id: 2, я: 135, календарь: 200, переверну: 540 },
-    { name: "Fourth group", id: 3, я: 333, календарь: 920, переверну: 211 },
-  ]);
+  const [graphs, setGraphs] = React.useState([]);
   const [infos, setInfos] = React.useState([]);
   const [infosLoad, setInfosLoad] = React.useState([]);
 
@@ -55,6 +50,7 @@ function App() {
   useEffect(() => {
     getDangerInfo();
     getAllLoad();
+    getKPEInfo();
   }, []);
 
   function getAllLoad() {
@@ -96,23 +92,31 @@ function App() {
   }
 
   function getKPEInfo() {
-    sendRequest("http://127.0.0.1:5555/dataProvider/КПЭ/analyzeStock").then(
+    sendRequest("http://127.0.0.1:5555/dataProvider/КПЭ/getTableData").then(
       (res) => {
         let result = [];
-        let flag = false;
         for (const data of res.data) {
-          const dateArr = [
+          let flag = false;
+          const dataArr = [
             data.date1value,
             data.date2value,
             data.date3value,
             data.date4value,
             data.date5value,
           ];
+          const dateArr = [
+            "30.09.2021",
+            "01.10.2021",
+            "04.10.2021",
+            "05.10.2021",
+            "06.10.2021",
+          ];
           for (const final of result) {
             if (data.administrativeMetric === final.parentMetric) {
               final.paramMetrics.push({
                 metricName: data.metricParam,
-                data: dateArr,
+                data: dataArr,
+                date: dateArr,
               });
               flag = true;
             }
@@ -123,13 +127,14 @@ function App() {
               paramMetrics: [
                 {
                   metricName: data.metricParam,
-                  data: dateArr,
+                  data: dataArr,
+                  date: dateArr,
                 },
               ],
             });
           }
         }
-        return result;
+        setGraphs(result);
       }
     );
   }
@@ -289,7 +294,7 @@ function App() {
       </div>
       <div className="wrapper">
         <div className="map">
-          {panel && graph ? <BarGraphics data={getKPEInfo()} /> : null}
+          {panel && graph ? <BarGraphics data={graph} /> : null}
           {problem ? (
             <div className="inner-map">
               {three && allInfo ? <AllInfo item={allInfo} /> : null}
