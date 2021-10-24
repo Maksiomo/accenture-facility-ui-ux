@@ -5,10 +5,12 @@ function GraphicsMenu(props) {
     return (
         <ul className='graphics'>
             {props.graphics.map(graphic=>{
-                <LineGraphics 
+                return (
+                    <LineGraphics 
                     data = {graphic}
                     key = {graphic.parentMetric}
                 />
+                )
             })}
         </ul>
     )
