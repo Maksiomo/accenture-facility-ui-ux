@@ -312,13 +312,6 @@ function App() {
               ) : (
                 <InfoMenuLoad infos={infosLoad} />
               )}
-              {three ? (
-              <div className="search-bar">
-              <input type="text" placeholder="Поиск..." />
-              </div>
-              ) : (
-              <div className="dark-block"></div>
-            )}
             </div>
             <div className="vertical-menu-div">
               {three ? (
@@ -328,6 +321,13 @@ function App() {
               )}
               
             </div>
+            {two ? (
+              <div className="search-bar">
+              <input type="text" placeholder="Поиск..." />
+              </div>
+              ) : (
+              <div className="dark-block"></div>
+            )}
             {three ? (
               <div className="search-bar">
               <input type="text" placeholder="Поиск..." />
