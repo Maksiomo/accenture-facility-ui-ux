@@ -97,26 +97,28 @@ function App() {
         let result = [];
         for (const data of res.data) {
           let flag = false;
+          const dateArr = [
+            "30.09.2021",
+            "1.10.2021",
+            "4.10.2021",
+            "5.10.2021",
+            "6.10.2021",
+          ];
           const dataArr = [
             {
               data: data.date1value,
-              date: "30.09.2021",
             },
             {
               data: data.date2value,
-              date: "01.10.2021",
             },
             {
               data: data.date3value,
-              date: "04.10.2021",
             },
             {
               data: data.date4value,
-              date: "05.10.2021",
             },
             {
               data: data.date5value,
-              date: "06.10.2021",
             },
           ];
           for (const final of result) {
@@ -131,6 +133,7 @@ function App() {
           if (!flag) {
             result.push({
               parentMetric: data.administrativeMetric,
+              date: dateArr,
               paramMetrics: [
                 {
                   metricName: data.metricParam,
