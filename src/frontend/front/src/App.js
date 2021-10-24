@@ -134,7 +134,7 @@ function App() {
             });
           }
         }
-        console.log(result);
+        setGraphs(result);
       }
     );
   }
