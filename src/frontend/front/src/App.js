@@ -286,6 +286,7 @@ function App() {
       </div>
       <div className="wrapper">
         <div className="map">
+          {plan ? <img src="https://media.discordapp.net/attachments/776388115195101194/901722205975642122/leftovers.png" alt="text"/> : null}
           {panel && graphs ? <GraphicsMenu graphics={graphs} /> : null}
           {problem ? (
             <div className="inner-map">
