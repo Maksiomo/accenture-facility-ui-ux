@@ -21,7 +21,7 @@ function BarGraphics({ data }) {
       <LineChart
         width={300}
         height={250}
-        data={paramMetrics}
+        data={data.paramMetrics}
         margin={{ top: 5, right: 5, left: 5, bottom: 5 }}
       >
         <Line
