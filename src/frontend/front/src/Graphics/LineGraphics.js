@@ -27,15 +27,17 @@ function BarGraphics({ data }) {
         {data.paramMetrics.map((element) => {
           return (
             <Line
+              name={element.metricName}
               data={element.data}
               type="monotone"
               dataKey="data"
-              stroke="#8884d8"
+              stroke={"rgb(" + Math.random()*255 + ',' + Math.random()*255 + ',' + Math.random()*255 + ')'}
               dot={true}
             />
           );
         })}
         <XAxis dataKey="date" />
+        <Legend verticalAlign="top" height={36}/>
         <YAxis />
       </LineChart>
     </li>
