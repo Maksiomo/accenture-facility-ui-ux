@@ -98,25 +98,32 @@ function App() {
         for (const data of res.data) {
           let flag = false;
           const dataArr = [
-            data.date1value,
-            data.date2value,
-            data.date3value,
-            data.date4value,
-            data.date5value,
-          ];
-          const dateArr = [
-            "30.09.2021",
-            "01.10.2021",
-            "04.10.2021",
-            "05.10.2021",
-            "06.10.2021",
+            {
+              data: data.date1value,
+              date: "30.09.2021",
+            },
+            {
+              data: data.date2value,
+              date: "01.10.2021",
+            },
+            {
+              data: data.date3value,
+              date: "04.10.2021",
+            },
+            {
+              data: data.date4value,
+              date: "05.10.2021",
+            },
+            {
+              data: data.date5value,
+              date: "06.10.2021",
+            },
           ];
           for (const final of result) {
             if (data.administrativeMetric === final.parentMetric) {
               final.paramMetrics.push({
                 metricName: data.metricParam,
                 data: dataArr,
-                date: dateArr,
               });
               flag = true;
             }
@@ -128,7 +135,6 @@ function App() {
                 {
                   metricName: data.metricParam,
                   data: dataArr,
-                  date: dateArr,
                 },
               ],
             });
@@ -305,20 +311,23 @@ function App() {
               ) : (
                 <div className="dark-block"></div>
               )}
-              
             </div>
             {three ? (
               <div className="search-bar">
-              <input ctyle={{width: '100%', margin: '4 px'}} type="text" placeholder="Поиск..." />
+                <input
+                  ctyle={{ width: "100%", margin: "4 px" }}
+                  type="text"
+                  placeholder="Поиск..."
+                />
               </div>
-              ) : (
+            ) : (
               <div className="search-bar">
-              <input type="text" placeholder="Поиск..." />
+                <input type="text" placeholder="Поиск..." />
               </div>
             )}
           </div>
         ) : null}
-        
+
         {plan ? (
           <div className="side-menu">
             <div className="vertical-menu-div">
