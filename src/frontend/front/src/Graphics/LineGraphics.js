@@ -31,13 +31,21 @@ function BarGraphics({ data }) {
               data={element.data}
               type="monotone"
               dataKey="data"
-              stroke={"rgb(" + Math.random()*255 + ',' + Math.random()*255 + ',' + Math.random()*255 + ')'}
+              stroke={
+                "rgb(" +
+                Math.random() * 200 +
+                "," +
+                Math.random() * 200 +
+                "," +
+                Math.random() * 200 +
+                ")"
+              }
               dot={true}
             />
           );
         })}
         <XAxis dataKey="date" />
-        <Legend verticalAlign="top" height={36}/>
+        <Legend verticalAlign="bottom" height={36} />
         <YAxis />
       </LineChart>
     </li>
