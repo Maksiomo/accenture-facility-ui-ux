@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect } from "react";
 import AllInfo from "./AllInfo";
-import BarGraphics from "./BarGraphics";
+import GraphicsMenu from "./Graphics/GraphicsMenu";
 import Context from "./Context";
 import HorizontalMenu from "./HorizontalMenu/HorizontalMenu";
 import InfoMenu from "./InfoMenu/InfoMenu";
@@ -134,7 +134,7 @@ function App() {
             });
           }
         }
-        setGraphs(result);
+        console.log(result);
       }
     );
   }
@@ -257,20 +257,6 @@ function App() {
     setInfos(infos);
   }
 
-  const [graph, setGraph] = React.useState(true);
-
-  function showGraph() {
-    setPanel(false);
-    setPlan(false);
-    setProblem(false);
-    setGraph(true);
-    setGraphs(
-      graphs.map((gr) => {
-        return gr;
-      })
-    );
-  }
-
   function pickGraph(id) {}
 
   return (
@@ -294,7 +280,7 @@ function App() {
       </div>
       <div className="wrapper">
         <div className="map">
-          {panel && graph ? <BarGraphics data={graph} /> : null}
+          {panel && graphs ? <GraphicsMenu data={graphs} /> : null}
           {problem ? (
             <div className="inner-map">
               {three && allInfo ? <AllInfo item={allInfo} /> : null}
@@ -323,7 +309,7 @@ function App() {
             </div>
             {three ? (
               <div className="search-bar">
-              <input type="text" placeholder="Поиск..." />
+              <input ctyle={{width: '100%', margin: '4 px'}} type="text" placeholder="Поиск..." />
               </div>
               ) : (
               <div className="search-bar">

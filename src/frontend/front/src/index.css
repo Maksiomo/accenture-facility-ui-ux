@@ -187,10 +187,12 @@ code {
   margin-bottom: 4px;
 }
 
-.search {
+.search-bar {
   height: auto;
   width: 100%;
-  background-color: #333;
+  background-color: #444;
+  text-align: center;
+  justify-content: center;
 }
 
 .lds-dual-ring {

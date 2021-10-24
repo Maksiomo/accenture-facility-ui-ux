@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import Context from "./Context";
+import Context from "../Context";
 import {
   LineChart,
   Legend,
@@ -17,15 +17,15 @@ function BarGraphics({ data }) {
   const { pickGraph } = useContext(Context);
   console.log(data);
   return (
-    <div className="map" onClick={pickGraph.bind(null, data.id)}>
+    <li className="gr" onClick={pickGraph.bind(null, data.id)}>
       <LineChart
         width={300}
         height={250}
-        data={data}
+        data={paramMetrics}
         margin={{ top: 5, right: 5, left: 5, bottom: 5 }}
       >
         <Line
-          type="linear"
+          type="monotone"
           dataKey="paramMetrics.data"
           stroke="#8884d8"
           dot={true}
@@ -33,7 +33,7 @@ function BarGraphics({ data }) {
         <XAxis dataKey="paramMetrics.date" />
         <YAxis />
       </LineChart>
-    </div>
+    </li>
   );
   /*
   const { pickGraph } = useContext(Context);
