@@ -322,6 +322,11 @@ function App() {
             </div>
           </div>
         ) : null}
+        {three ? (
+          <div className="search">
+          <input type="text" placeholder="Поиск..." />
+          </div>
+        ) : null}
         {plan ? (
           <div className="side-menu">
             <div className="vertical-menu-div">
